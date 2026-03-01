@@ -1,74 +1,70 @@
-import { X, Send, Trash2 } from 'lucide-react';
+import React from 'react';
+import { ShoppingBag, X, Trash2, MessageCircle } from 'lucide-react';
+import { useWhatsAppTemplates } from '../hooks/useWhatsAppTemplates';
 import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
 
 interface InquiryBasketProps {
   basket: string[];
-  onRemove: (productName: string) => void;
+  onRemove: (name: string) => void;
   onClear: () => void;
-  onClose: () => void;
 }
 
-export default function InquiryBasket({ basket, onRemove, onClear, onClose }: InquiryBasketProps) {
+export default function InquiryBasket({ basket, onRemove, onClear }: InquiryBasketProps) {
+  const { templates, replacePlaceholders } = useWhatsAppTemplates();
   const { openWhatsApp } = useWhatsAppContact();
-  const { data: settings } = useBusinessSettings();
 
-  const handleSubmitInquiry = () => {
-    const companyName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-    const productList = basket.map((name, i) => `${i + 1}. ${name}`).join('\n');
-    const message = `Hello ${companyName},\n\nI am interested in the following products:\n\n${productList}\n\nPlease share pricing and availability. Thank you!`;
+  const handleBulkInquiry = () => {
+    const productList = basket.map(name => `• ${name}`).join('\n');
+    const message = replacePlaceholders(templates.productInquiry, {
+      products: productList,
+    });
     openWhatsApp(message);
   };
 
   return (
-    <div className="bg-card border border-primary/20 rounded-2xl p-4 sm:p-6">
+    <div className="mt-10 p-6 rounded-2xl bg-gold-50 border border-gold-300 shadow-luxury">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base sm:text-lg font-bold text-foreground">
-          Inquiry Basket ({basket.length})
-        </h3>
+        <div className="flex items-center gap-2">
+          <ShoppingBag className="h-5 w-5 text-gold-600" />
+          <h3 className="font-serif font-bold text-foreground text-lg">
+            Enquiry Basket ({basket.length})
+          </h3>
+        </div>
         <button
-          onClick={onClose}
-          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors"
+          onClick={onClear}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-destructive transition-colors"
         >
-          <X className="w-4 h-4 text-foreground/60" />
+          <Trash2 className="h-4 w-4" />
+          Clear All
         </button>
       </div>
 
       {/* Product List */}
-      <div className="space-y-2 mb-4 max-h-48 sm:max-h-60 overflow-y-auto">
-        {basket.map((productName) => (
+      <div className="flex flex-wrap gap-2 mb-5">
+        {basket.map(name => (
           <div
-            key={productName}
-            className="flex items-center justify-between gap-2 p-2.5 bg-secondary/30 rounded-lg"
+            key={name}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-gold-300 text-sm font-medium text-foreground"
           >
-            <p className="text-sm font-medium text-foreground truncate flex-1">{productName}</p>
+            {name}
             <button
-              onClick={() => onRemove(productName)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
+              onClick={() => onRemove(name)}
+              className="text-muted-foreground hover:text-destructive transition-colors"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </div>
         ))}
       </div>
 
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-        <button
-          onClick={onClear}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 border border-border text-foreground/70 rounded-lg text-sm font-medium hover:bg-secondary transition-colors min-h-[44px] sm:flex-1"
-        >
-          <Trash2 className="w-4 h-4" />
-          Clear All
-        </button>
-        <button
-          onClick={handleSubmitInquiry}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors min-h-[44px] sm:flex-1"
-        >
-          <Send className="w-4 h-4" />
-          Send Inquiry
-        </button>
-      </div>
+      {/* Send Inquiry */}
+      <button
+        onClick={handleBulkInquiry}
+        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors shadow-md"
+      >
+        <MessageCircle className="h-5 w-5" />
+        Send Bulk Enquiry via WhatsApp
+      </button>
     </div>
   );
 }

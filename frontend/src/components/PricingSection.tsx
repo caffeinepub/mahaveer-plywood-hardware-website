@@ -1,115 +1,87 @@
-import { Star } from 'lucide-react';
+import React from 'react';
 import PricingCard from './PricingCard';
-import { useWhatsAppTemplates } from '../hooks/useWhatsAppTemplates';
-import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
 
-const pricingTiers = [
+const PRICING_TIERS = [
   {
-    id: 'basic',
-    name: 'Basic',
-    price: '₹2.5L',
-    priceNote: 'starting from',
-    description: 'Essential interior package for budget-conscious homeowners.',
+    name: 'Essential',
+    tagline: 'Quality on a Budget',
+    priceRange: '₹1,00,000 – ₹1,50,000',
+    perSqFt: '₹800 – ₹1,200/sq ft',
     features: [
-      'Basic plywood & laminates',
-      'Standard modular kitchen',
-      'Basic wardrobe',
-      'Standard hardware fittings',
-      'Basic electrical work',
+      'BWR Grade Plywood',
+      'Standard Laminates',
+      'Basic Hardware Fittings',
+      'Modular Kitchen (Basic)',
+      'Standard Paint Finish',
+      '1 Year Warranty',
     ],
     isPopular: false,
+    color: 'border-gold-200',
   },
   {
-    id: 'premium',
     name: 'Premium',
-    price: '₹5L',
-    priceNote: 'starting from',
-    description: 'Complete interior solution with premium materials and finishes.',
+    tagline: 'Most Popular Choice',
+    priceRange: '₹1,50,000 – ₹3,00,000',
+    perSqFt: '₹1,200 – ₹2,000/sq ft',
     features: [
-      'Premium plywood & laminates',
-      'Designer modular kitchen',
-      'Premium wardrobe with accessories',
-      'Branded hardware fittings',
-      'Full electrical & lighting',
-      'Interior painting',
-      'Designer false ceiling',
+      'BWP/Marine Grade Plywood',
+      'Acrylic/PU Laminates',
+      'Hettich/Hafele Hardware',
+      'Modular Kitchen (Premium)',
+      'Texture Paint Finish',
+      'LED Cove Lighting',
+      '3 Year Warranty',
     ],
     isPopular: true,
+    color: 'border-gold-500',
   },
   {
-    id: 'luxury',
     name: 'Luxury',
-    price: '₹10L+',
-    priceNote: 'starting from',
-    description: 'Ultra-premium interior with the finest materials and craftsmanship.',
+    tagline: 'The Ultimate Experience',
+    priceRange: '₹3,00,000+',
+    perSqFt: '₹2,000 – ₹3,500/sq ft',
     features: [
-      'Top-grade plywood & imported laminates',
-      'Luxury modular kitchen with island',
-      'Walk-in wardrobe',
-      'Premium European hardware',
-      'Smart electrical & automation',
-      'Luxury paint & texture finishes',
-      'Custom false ceiling & lighting',
-      'Dedicated project manager',
+      'Premium Marine Plywood',
+      'Italian/Imported Laminates',
+      'Blum/Grass Hardware',
+      'Designer Modular Kitchen',
+      'Imported Wallpaper/Texture',
+      'Smart Lighting System',
+      'Custom Furniture Design',
+      '5 Year Warranty',
     ],
     isPopular: false,
+    color: 'border-gold-300',
   },
 ];
 
 export default function PricingSection() {
-  const { templates, replacePlaceholders } = useWhatsAppTemplates();
-  const { openWhatsApp } = useWhatsAppContact();
-  const { data: settings } = useBusinessSettings();
-
-  const handleQuoteClick = (tierName: string, tierBudget: string) => {
-    const companyName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-    const message = templates?.estimateMessageTemplate
-      ? replacePlaceholders(templates.estimateMessageTemplate, {
-          companyName,
-          name: '',
-          phone: '',
-          requirement: `${tierName} Package`,
-          budget: tierBudget,
-          message: '',
-        })
-      : `Hello ${companyName},\n\nI want a ${tierName} quote for my project.\n\nCity/Area:\nBudget: ${tierBudget}\nTimeline:\n\nPlease provide details and estimate for the ${tierName} package.`;
-
-    openWhatsApp(message);
-  };
-
   return (
-    <section id="pricing" className="py-16 sm:py-20 lg:py-24 bg-secondary/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="section-padding bg-cream-100">
+      <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-            <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-primary" />
-            Pricing Packages
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-100 border border-gold-300 mb-4">
+            <span className="text-gold-700 text-sm font-semibold tracking-wide uppercase">Transparent Pricing</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Choose Your Package
-          </h2>
-          <p className="text-sm sm:text-base text-foreground/60 max-w-2xl mx-auto">
-            Transparent pricing with no hidden costs. All packages include professional installation.
+          <h2 className="section-title">Choose Your Package</h2>
+          <p className="section-subtitle">
+            Flexible packages for every budget. All quotes are free and no-obligation.
           </p>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {pricingTiers.map((tier) => (
-            <PricingCard
-              key={tier.id}
-              tier={tier}
-              onQuoteClick={() =>
-                handleQuoteClick(
-                  tier.name,
-                  tier.name === 'Basic' ? 'Under 3L' : tier.name === 'Premium' ? '3L - 7L' : 'Above 10L'
-                )
-              }
-            />
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {PRICING_TIERS.map(tier => (
+            <PricingCard key={tier.name} {...tier} />
           ))}
         </div>
+
+        {/* Note */}
+        <p className="text-center text-muted-foreground text-sm mt-8">
+          * Prices are indicative and vary based on design complexity, materials, and area.
+          Contact us for an accurate quote.
+        </p>
       </div>
     </section>
   );

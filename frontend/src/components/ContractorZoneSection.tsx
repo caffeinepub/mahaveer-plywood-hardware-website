@@ -1,92 +1,76 @@
-import { Truck, Package, Users, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { Truck, BadgePercent, ShieldCheck, HeadphonesIcon } from 'lucide-react';
 import ContractorInquiryForm from './ContractorInquiryForm';
-import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
 
-const benefits = [
+const BENEFITS = [
   {
-    icon: Package,
+    icon: BadgePercent,
     title: 'Bulk Pricing',
-    description: 'Special rates for bulk orders and repeat customers.',
+    description: 'Exclusive discounts on large orders. The more you buy, the more you save.',
   },
   {
     icon: Truck,
     title: 'Fast Delivery',
-    description: 'Priority delivery for contractor orders.',
+    description: 'Priority dispatch and on-time delivery to your project site.',
   },
   {
-    icon: Users,
+    icon: ShieldCheck,
+    title: 'Quality Assured',
+    description: 'ISI certified materials with quality checks at every stage.',
+  },
+  {
+    icon: HeadphonesIcon,
     title: 'Dedicated Support',
-    description: 'Dedicated account manager for your projects.',
+    description: 'Personal account manager for all your project requirements.',
   },
 ];
 
 export default function ContractorZoneSection() {
-  const { openWhatsApp } = useWhatsAppContact();
-
   return (
-    <section id="contractors" className="py-16 sm:py-20 lg:py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="section-padding bg-cream-100">
+      <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-            Contractor Zone
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-100 border border-gold-300 mb-4">
+            <span className="text-gold-700 text-sm font-semibold tracking-wide uppercase">For Professionals</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            For Contractors & Builders
-          </h2>
-          <p className="text-sm sm:text-base text-foreground/60 max-w-2xl mx-auto">
-            Special pricing and dedicated support for contractors, builders, and interior designers.
+          <h2 className="section-title">Contractor Zone</h2>
+          <p className="section-subtitle">
+            Special partnership program for contractors, architects, and interior designers.
+            Get free bulk quotes and exclusive trade pricing.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Left: Benefits */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Benefits */}
           <div>
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 mb-6 sm:mb-8">
-              {benefits.map((benefit) => {
-                const Icon = benefit.icon;
-                return (
-                  <div
-                    key={benefit.title}
-                    className="flex items-start gap-3 sm:gap-4 p-4 bg-card border border-border rounded-xl"
-                  >
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-foreground mb-1">{benefit.title}</h3>
-                      <p className="text-xs sm:text-sm text-foreground/60">{benefit.description}</p>
-                    </div>
+            <h3 className="font-serif text-2xl font-bold text-foreground mb-8">
+              Why Partner With Us?
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {BENEFITS.map(({ icon: Icon, title, description }) => (
+                <div key={title} className="luxury-card p-6">
+                  <div className="w-12 h-12 rounded-xl bg-gold-100 flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-gold-600" />
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Service Badges */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {['Plywood', 'Hardware', 'Laminates', 'Electrical', 'Paints', 'Modular'].map((badge) => (
-                <span
-                  key={badge}
-                  className="px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-xs sm:text-sm text-primary font-medium"
-                >
-                  {badge}
-                </span>
+                  <h4 className="font-serif font-bold text-foreground mb-2">{title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+                </div>
               ))}
             </div>
-
-            <button
-              onClick={() => openWhatsApp('Hello! I am a contractor and would like to discuss bulk pricing and partnership opportunities.')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm sm:text-base min-h-[44px]"
-            >
-              Discuss Partnership
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
 
-          {/* Right: Inquiry Form */}
+          {/* Form */}
           <div>
-            <ContractorInquiryForm />
+            <div className="luxury-card p-8">
+              <h3 className="font-serif text-2xl font-bold text-foreground mb-2">
+                Free Contractor Quote
+              </h3>
+              <p className="text-muted-foreground text-sm mb-6">
+                Fill in your details and we'll get back to you with exclusive trade pricing.
+              </p>
+              <ContractorInquiryForm />
+            </div>
           </div>
         </div>
       </div>

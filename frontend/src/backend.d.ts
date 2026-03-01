@@ -48,6 +48,8 @@ export enum UserRole {
 export interface backendInterface {
     addProduct(name: string, category: Category, description: string, specifications: string, image: string): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    deleteProduct(name: string): Promise<void>;
+    editProduct(existingName: string, name: string, category: Category, description: string, specifications: string, image: string): Promise<void>;
     filterProductsByCategory(category: Category): Promise<Array<Product>>;
     getAllProducts(): Promise<Array<Product>>;
     getBusinessSettings(): Promise<BusinessSettings | null>;

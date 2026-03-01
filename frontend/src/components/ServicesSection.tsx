@@ -1,130 +1,88 @@
-import { Package, Home, Zap, Paintbrush, ArrowRight } from 'lucide-react';
+import React from 'react';
 import ServiceCard from './ServiceCard';
-import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
 
-const services = [
+const SERVICES = [
   {
-    id: 'materials',
-    title: 'Premium Materials',
-    description: 'Top-quality plywood, laminates, and hardware from leading brands.',
-    icon: Package,
-    features: ['ISI Marked Plywood', 'Designer Laminates', 'Premium Hardware', 'All Brands Available'],
-    image: '/assets/generated/service-plywood.dim_256x256.png',
+    title: 'Plywood & Boards',
+    description: 'Premium quality plywood, MDF, particle boards and blockboards from top brands like Century, Greenply, and Kitply.',
+    image: '/assets/generated/service-plywood.dim_600x400.png',
+    features: ['BWR/BWP Grade', 'ISI Certified', 'All Thicknesses', 'Bulk Discounts'],
+    color: 'from-amber-50 to-orange-50',
   },
   {
-    id: 'modular',
-    title: 'Modular Interiors',
-    description: 'Custom modular kitchens, wardrobes, and complete interior solutions.',
-    icon: Home,
-    features: ['Modular Kitchens', 'Wardrobes', 'TV Units', 'Study Tables'],
-    image: '/assets/generated/service-kitchen.dim_256x256.png',
+    title: 'Hardware & Fittings',
+    description: 'Complete range of furniture hardware including hinges, channels, handles, locks, and accessories from Hettich, Hafele, and more.',
+    image: '/assets/generated/service-hardware.dim_600x400.png',
+    features: ['Soft-Close Hinges', 'Drawer Channels', 'Cabinet Handles', 'Door Locks'],
+    color: 'from-slate-50 to-gray-50',
   },
   {
-    id: 'electrical',
-    title: 'Electrical & Lighting',
-    description: 'Professional electrical installations and designer lighting solutions.',
-    icon: Zap,
-    features: ['Full Wiring', 'LED Lighting', 'Switchboards', 'Safety Compliance'],
-    image: '/assets/generated/service-hardware.dim_256x256.png',
+    title: 'Laminates & Veneers',
+    description: 'Extensive collection of decorative laminates, acrylic sheets, and natural veneers in 500+ designs and finishes.',
+    image: '/assets/generated/service-laminates.dim_600x400.png',
+    features: ['300+ Designs', 'Matte & Gloss', 'Acrylic Finish', 'Natural Veneers'],
+    color: 'from-rose-50 to-pink-50',
   },
   {
-    id: 'paints',
-    title: 'Paints & Decor',
-    description: 'Premium paint services with expert color consultation.',
-    icon: Paintbrush,
-    features: ['Interior Painting', 'Texture Finishes', 'Color Consultation', 'All Brands'],
-    image: '/assets/generated/service-laminates.dim_256x256.png',
+    title: 'Electrical Solutions',
+    description: 'Complete electrical fittings including modular switches, LED lighting, wiring accessories from Legrand, Havells, and Philips.',
+    image: '/assets/generated/service-electrical.dim_600x400.png',
+    features: ['Modular Switches', 'LED Lighting', 'Cove Lighting', 'Smart Controls'],
+    color: 'from-yellow-50 to-amber-50',
+  },
+  {
+    title: 'Paints & Finishes',
+    description: 'Premium interior and exterior paints, textures, and wall finishes from Asian Paints, Berger, and Dulux.',
+    image: '/assets/generated/service-paints.dim_600x400.png',
+    features: ['1000+ Shades', 'Texture Paints', 'Waterproof Coats', 'Free Tinting'],
+    color: 'from-purple-50 to-violet-50',
+  },
+  {
+    title: 'Interior Design',
+    description: 'End-to-end interior design and execution for kitchens, wardrobes, living rooms, and complete home interiors.',
+    image: '/assets/generated/service-interiors.dim_600x400.png',
+    features: ['3D Design', 'Modular Kitchen', 'Wardrobes', 'Full Home'],
+    color: 'from-emerald-50 to-teal-50',
   },
 ];
 
 export default function ServicesSection() {
-  const { openWhatsApp } = useWhatsAppContact();
-
   return (
-    <section id="services" className="py-16 sm:py-20 lg:py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="section-padding bg-cream-100">
+      <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-            Our Services
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-100 border border-gold-300 mb-4">
+            <span className="text-gold-700 text-sm font-semibold tracking-wide uppercase">What We Offer</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Complete Interior Solutions
-          </h2>
-          <p className="text-sm sm:text-base text-foreground/60 max-w-2xl mx-auto">
-            From premium materials to complete installations — everything you need for your dream interior.
+          <h2 className="section-title">Our Premium Services</h2>
+          <p className="section-subtitle">
+            From raw materials to complete interior solutions — everything under one roof
           </p>
+          {/* Stats Row */}
+          <div className="flex flex-wrap justify-center gap-8 mt-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold font-serif text-gold-600">27+</div>
+              <div className="text-sm text-muted-foreground font-medium">Years Experience</div>
+            </div>
+            <div className="w-px bg-gold-200 hidden sm:block" />
+            <div className="text-center">
+              <div className="text-3xl font-bold font-serif text-gold-600">5000+</div>
+              <div className="text-sm text-muted-foreground font-medium">Projects Completed</div>
+            </div>
+            <div className="w-px bg-gold-200 hidden sm:block" />
+            <div className="text-center">
+              <div className="text-3xl font-bold font-serif text-gold-600">6</div>
+              <div className="text-sm text-muted-foreground font-medium">Service Categories</div>
+            </div>
+          </div>
         </div>
 
         {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-14">
-          {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {SERVICES.map(service => (
+            <ServiceCard key={service.title} {...service} />
           ))}
-        </div>
-
-        {/* Quote Blocks */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Electrical Quote */}
-          <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-5 sm:p-6">
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">Electrical Services</h3>
-                <p className="text-xs sm:text-sm text-foreground/60 mb-3 sm:mb-4">
-                  Professional electrical work for new constructions and renovations.
-                </p>
-                <button
-                  onClick={() => openWhatsApp('Hello! I need a quote for electrical services. Please share details.')}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-500/20 transition-colors min-h-[44px]"
-                >
-                  Get Electrical Quote
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Paint Quote */}
-          <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-5 sm:p-6">
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Paintbrush className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">Paint Services</h3>
-                <p className="text-xs sm:text-sm text-foreground/60 mb-3 sm:mb-4">
-                  Expert painting with premium brands and color consultation.
-                </p>
-                <button
-                  onClick={() => openWhatsApp('Hello! I need a quote for paint services. Please share details.')}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-500/20 transition-colors min-h-[44px]"
-                >
-                  Get Paint Quote
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Complete Home CTA */}
-        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 sm:p-8 text-center">
-          <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2 sm:mb-3">
-            Complete Home Interior Package
-          </h3>
-          <p className="text-sm sm:text-base text-foreground/60 mb-4 sm:mb-6 max-w-xl mx-auto">
-            Get everything done — materials, modular furniture, electrical, and painting — with one comprehensive quote.
-          </p>
-          <button
-            onClick={() => openWhatsApp('Hello! I am interested in a complete home interior package. Please share details and pricing.')}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm sm:text-base min-h-[44px] w-full sm:w-auto"
-          >
-            Get Complete Home Quote
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </section>

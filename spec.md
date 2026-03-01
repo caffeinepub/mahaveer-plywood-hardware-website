@@ -1,18 +1,22 @@
 # Specification
 
 ## Summary
-**Goal:** Make the entire application fully responsive and mobile-friendly across all sections and components.
+**Goal:** Build a full luxury-themed website for Mahaveer Plywood & Interiors with a product catalog, quote builder, admin panel, and WhatsApp integrations.
 
 **Planned changes:**
-- Add a hamburger menu to the Navigation for small screens, collapsing nav links and CTA buttons into a smooth-opening mobile menu
-- Make the HeroSection (headline, service badges, action buttons, QuickEstimateForm) stack vertically and scale correctly on mobile
-- Update ServicesSection/ServiceCard grid to use 1 column on mobile, 2 on tablet, 3+ on desktop
-- Update ProductCatalogSection/ProductCard grid, search input, category filters, and InquiryBasket to be usable on small screens without horizontal scrolling
-- Make GallerySection thumbnails reflow to fewer columns on mobile and make the ImageLightbox full-screen with large touch-friendly prev/next controls
-- Stack PricingSection cards to a single full-width column on mobile
-- Make all forms (ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, ContactSection) use full-width inputs and tappable submit buttons on mobile
-- Stack Footer columns vertically on mobile with tappable social icons
-- Make AdminPanel tabs, product list, and settings forms usable on mobile without horizontal overflow
-- Reposition/resize FloatingWhatsAppButton so it does not obscure primary CTAs or form submit buttons on small screens
+- Implement a white/gold luxury theme with Playfair Display headings, Inter body text, and full mobile responsiveness
+- Build a full-screen Hero section with headline, CTA buttons, and four trust-indicator cards (27+ years, 5000+ projects, satisfaction rating, category count)
+- Build a Services section with six service cards (Plywood, Hardware, Laminates, Electrical, Paints, Interiors), each with image, features, and a quote CTA
+- Build a Product Catalog section with category filter tabs, search input, product grid, WhatsApp enquiry per product, and an InquiryBasket panel
+- Build a Premium Quote Builder where users select rooms and quality tier (Essential / Premium / Luxury) to get a cost estimate, with WhatsApp submission and "Not Applicable" for full-home packages below ₹8,00,000
+- Build a Pricing section with three tier cards (Essential, Premium, Luxury), highlighting the most popular tier
+- Build a Gallery section with a 3-column image grid and full-screen lightbox with keyboard navigation
+- Build a Contractor Zone section with four benefit cards and a contractor inquiry form that sends via WhatsApp
+- Build a Contact section with business info cards, a Site Visit Booking Form, and a Quick Estimate Form — both submitting via WhatsApp, with budget validation on the Quick Estimate
+- Add a fixed floating WhatsApp button (bottom-right) with animated ping, linking to 919588046569
+- Build a fixed top Navigation bar with smooth-scroll links, company name, phone CTA, and mobile hamburger menu
+- Build a site Footer with logo, nav links, contact details, and a copyright bar
+- Build a PIN-protected Admin Panel (PIN: 2580) with tabs for managing products, business settings, and WhatsApp message templates with live preview
+- Implement a Motoko backend actor with CRUD for product catalog, business settings (contact info, WhatsApp templates), and admin access control
 
-**User-visible outcome:** The application is fully usable on mobile and tablet devices, with all sections, forms, grids, and navigation adapting cleanly to small screens while preserving the existing luxury black-and-gold visual theme.
+**User-visible outcome:** Visitors can browse services and products, get interior cost estimates, book site visits, and contact via WhatsApp. Contractors have a dedicated inquiry zone. An admin can manage products, settings, and WhatsApp templates behind a PIN-protected panel.

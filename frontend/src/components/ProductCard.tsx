@@ -1,91 +1,95 @@
-import { Plus, Check } from 'lucide-react';
-import { Product } from '../backend';
+import React from 'react';
+import { MessageCircle, Plus, Minus } from 'lucide-react';
 import { useWhatsAppTemplates } from '../hooks/useWhatsAppTemplates';
 import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
+import type { Product } from '../backend';
+import { Category } from '../backend';
 
 interface ProductCardProps {
   product: Product;
-  onAddToBasket: () => void;
   isInBasket: boolean;
+  onAddToBasket: () => void;
+  onRemoveFromBasket: () => void;
 }
 
-export default function ProductCard({ product, onAddToBasket, isInBasket }: ProductCardProps) {
+const CATEGORY_COLORS: Record<string, string> = {
+  [Category.plywood]: 'bg-amber-100 text-amber-800',
+  [Category.hardware]: 'bg-slate-100 text-slate-800',
+  [Category.laminates]: 'bg-rose-100 text-rose-800',
+  [Category.kitchen]: 'bg-orange-100 text-orange-800',
+  [Category.wardrobe]: 'bg-purple-100 text-purple-800',
+  [Category.electricals]: 'bg-yellow-100 text-yellow-800',
+  [Category.paints]: 'bg-blue-100 text-blue-800',
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  [Category.plywood]: 'Plywood',
+  [Category.hardware]: 'Hardware',
+  [Category.laminates]: 'Laminates',
+  [Category.kitchen]: 'Kitchen',
+  [Category.wardrobe]: 'Wardrobe',
+  [Category.electricals]: 'Electricals',
+  [Category.paints]: 'Paints',
+};
+
+export default function ProductCard({ product, isInBasket, onAddToBasket, onRemoveFromBasket }: ProductCardProps) {
   const { templates, replacePlaceholders } = useWhatsAppTemplates();
   const { openWhatsApp } = useWhatsAppContact();
-  const { data: settings } = useBusinessSettings();
 
-  const handleDirectInquiry = () => {
-    const companyName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-    const message = templates?.productInquiryTemplate
-      ? replacePlaceholders(templates.productInquiryTemplate, {
-          companyName,
-          product: product.name,
-          category: product.category,
-          specifications: product.specifications,
-        })
-      : `Hello ${companyName},\n\nProduct Inquiry:\n• ${product.name}\n\nCity/Area:\nQuantity:\nBrand preference (if any):`;
+  const handleWhatsAppInquiry = () => {
+    const message = replacePlaceholders(templates.productInquiry, {
+      products: `• ${product.name}\n  ${product.specifications}`,
+    });
     openWhatsApp(message);
   };
 
+  const categoryKey = typeof product.category === 'string' ? product.category : Object.keys(product.category)[0];
+
   return (
-    <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 transition-all duration-300 group flex flex-col">
+    <div className="luxury-card overflow-hidden group transition-all duration-300 hover:-translate-y-1 flex flex-col">
       {/* Image */}
-      <div className="relative h-36 sm:h-40 bg-secondary overflow-hidden">
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-foreground/20 text-4xl">
-            📦
-          </div>
-        )}
-        <div className="absolute top-2 right-2">
-          <span className="px-2 py-1 bg-background/80 backdrop-blur-sm border border-border rounded-full text-xs text-foreground/70 capitalize">
-            {product.category}
+      <div className="relative h-40 bg-gold-50 overflow-hidden">
+        <img
+          src={product.image || '/assets/generated/service-plywood.dim_256x256.png'}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          onError={e => {
+            (e.target as HTMLImageElement).src = '/assets/generated/service-plywood.dim_256x256.png';
+          }}
+        />
+        {/* Category Badge */}
+        <div className="absolute top-2 left-2">
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${CATEGORY_COLORS[categoryKey] ?? 'bg-gold-100 text-gold-800'}`}>
+            {CATEGORY_LABELS[categoryKey] ?? categoryKey}
           </span>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-bold text-sm sm:text-base text-foreground mb-1 line-clamp-2">{product.name}</h3>
-        <p className="text-xs sm:text-sm text-foreground/60 mb-2 line-clamp-2 flex-1">{product.description}</p>
-        {product.specifications && (
-          <p className="text-xs text-foreground/40 mb-3 line-clamp-1">{product.specifications}</p>
-        )}
+        <h3 className="font-serif font-bold text-foreground text-sm mb-1 line-clamp-2">{product.name}</h3>
+        <p className="text-muted-foreground text-xs leading-relaxed mb-2 line-clamp-2">{product.description}</p>
+        <p className="text-xs text-gold-700 font-medium mb-4 line-clamp-2">{product.specifications}</p>
 
         {/* Actions */}
-        <div className="flex flex-col gap-2 mt-auto">
+        <div className="mt-auto flex gap-2">
           <button
-            onClick={handleDirectInquiry}
-            className="w-full px-3 py-2.5 border border-primary/30 text-primary rounded-lg text-xs sm:text-sm font-medium hover:bg-primary/10 transition-colors min-h-[40px]"
+            onClick={handleWhatsAppInquiry}
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-colors"
           >
-            Quick Inquiry
+            <MessageCircle className="h-3.5 w-3.5" />
+            Enquire
           </button>
           <button
-            onClick={onAddToBasket}
-            disabled={isInBasket}
-            className={`w-full flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-colors min-h-[40px] ${
+            onClick={isInBasket ? onRemoveFromBasket : onAddToBasket}
+            className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
               isInBasket
-                ? 'bg-primary/20 text-primary border border-primary/30 cursor-default'
-                : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                ? 'bg-gold-500 text-white hover:bg-gold-600'
+                : 'border border-gold-300 text-gold-700 hover:bg-gold-50'
             }`}
           >
-            {isInBasket ? (
-              <>
-                <Check className="w-3.5 h-3.5" />
-                Added
-              </>
-            ) : (
-              <>
-                <Plus className="w-3.5 h-3.5" />
-                Add to Basket
-              </>
-            )}
+            {isInBasket ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+            {isInBasket ? 'Remove' : 'Add'}
           </button>
         </div>
       </div>

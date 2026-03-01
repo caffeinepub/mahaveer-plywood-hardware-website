@@ -1,176 +1,275 @@
 {
   "kind": "build_request",
-  "title": "Mobile-friendly responsive layout",
+  "title": "Full Mahaveer Plywood & Interiors Website Rebuild",
+  "projectName": "Mahaveer Plywood & Interiors",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Make the Navigation component fully responsive: the desktop nav links and CTA buttons should collapse into a hamburger/mobile menu on small screens, ensuring touch targets are large enough and the menu opens/closes smoothly.",
+      "text": "Implement a white/gold luxury theme across the entire frontend with clean, premium aesthetics, gold accents, and mobile-responsive design consistent with the existing CSS token setup.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ],
         "quotes": [
-          "It has to mobile friendly"
+          "Clean white theme with gold accents",
+          "Premium, luxury aesthetic",
+          "Mobile-responsive design"
         ]
       },
       "acceptanceCriteria": [
-        "Navigation renders a hamburger icon on screens smaller than md breakpoint",
-        "Tapping the hamburger opens a full-width dropdown with all nav links",
-        "Active section highlighting works in mobile menu",
-        "WhatsApp CTA button is accessible in mobile menu"
+        "All pages use white backgrounds with gold accent colors",
+        "Typography uses Playfair Display for headings and Inter for body text",
+        "Layout is fully responsive across mobile, tablet, and desktop"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Make the HeroSection responsive: headline text, service badges, action buttons, and the embedded QuickEstimateForm must stack vertically and scale correctly on mobile screens without overflow or truncation.",
+      "text": "Build the Hero section with a full-screen background image, company headline, subheadline, CTA buttons linking to the quote and gallery sections, and four trust-indicator cards showing 27+ years experience, 5000+ projects, satisfaction rating, and category count.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
+        ],
+        "quotes": [
+          "27+ years experience",
+          "5000+ projects"
         ]
       },
       "acceptanceCriteria": [
-        "Hero headline font size scales down on mobile (text-3xl or smaller)",
-        "Service badges wrap or stack cleanly on small screens",
-        "Action buttons are full-width or appropriately sized on mobile",
-        "QuickEstimateForm fields are full-width and usable on mobile"
+        "Hero section renders full-screen with background image",
+        "CTA buttons scroll smoothly to quote and gallery sections",
+        "Four trust-indicator cards are visible on all screen sizes"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Make the ServicesSection and ServiceCard components responsive: the service card grid should switch from multi-column to a single-column or two-column layout on small screens, with readable text and accessible buttons.",
+      "text": "Build the Services section showcasing six services: Plywood, Hardware, Laminates, Electrical, Paints, and Interiors — each with a service card containing image, title, description, feature list, and a 'Get Free Quote' button that scrolls to the quote section.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
+        ],
+        "quotes": [
+          "Services: Plywood, Hardware, Laminates, Electrical, Paints, Interiors"
         ]
       },
       "acceptanceCriteria": [
-        "Service cards stack in 1 column on mobile, 2 on tablet, and 3+ on desktop",
-        "Card text does not overflow or get clipped",
-        "Quote-request buttons are full-width on mobile"
+        "All six service cards are rendered in a responsive grid",
+        "'Get Free Quote' button on each card scrolls to the quote section"
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Make the ProductCatalogSection and ProductCard components responsive: the product grid, search input, category filter bar, and InquiryBasket must all be usable on small screens without horizontal scrolling.",
+      "text": "Build the Product Catalog section with category filter tabs, a search input, and a grid of product cards. Each product card shows image, category badge, description, and action buttons to inquire via WhatsApp or add to the enquiry basket. Display an InquiryBasket panel when items are selected.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
+        ],
+        "quotes": [
+          "Product catalog with enquiry basket"
         ]
       },
       "acceptanceCriteria": [
-        "Category filter buttons wrap or scroll horizontally without breaking layout",
-        "Search input is full-width on mobile",
-        "Product grid is 1 column on mobile and 2 columns on tablet",
-        "InquiryBasket panel is readable and scrollable on small screens"
+        "Category filter and search input filter products in real time",
+        "Products can be added to and removed from the enquiry basket",
+        "InquiryBasket panel appears when at least one item is selected",
+        "WhatsApp enquiry opens a pre-filled chat link"
       ]
     },
     {
       "id": "REQ-5",
-      "text": "Make the GallerySection and ImageLightbox responsive: gallery thumbnails should reflow to fewer columns on mobile, and the lightbox should be full-screen with accessible prev/next controls on touch devices.",
+      "text": "Build the Premium Quote Builder section where users select rooms and a quality tier (Essential / Premium / Luxury) to receive an estimated interior project cost range, then send the quote details via WhatsApp. Show 'Not Applicable' for entire home furniture packages below ₹8,00,000.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
+        ],
+        "quotes": [
+          "Quote range: ₹1,00,000 - ₹2,00,000+",
+          "'Not Applicable' shown for entire home furniture below ₹8,00,000",
+          "Free quote option"
         ]
       },
       "acceptanceCriteria": [
-        "Gallery displays 1 column on mobile and 2 columns on tablet",
-        "Lightbox fills the full viewport on mobile",
-        "Prev/next buttons are large enough for touch (min 44x44px)"
+        "Room selection and quality tier inputs update the cost estimate dynamically",
+        "Packages below ₹8,00,000 for entire home show 'Not Applicable'",
+        "WhatsApp button sends the full quote summary"
       ]
     },
     {
       "id": "REQ-6",
-      "text": "Make the PricingSection and PricingCard components responsive: the three-column pricing grid must stack to a single column on mobile with full-width cards.",
+      "text": "Build the Pricing section with three tiers — Essential, Premium, and Luxury — each rendered as a pricing card with features list, price range, and a CTA button. The most popular tier should be visually highlighted.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ]
       },
       "acceptanceCriteria": [
-        "Pricing cards stack vertically on mobile",
-        "Feature lists and CTA buttons are fully visible without overflow"
+        "Three pricing tier cards are displayed in a responsive grid",
+        "The most popular tier is visually distinguished",
+        "CTA button on each card scrolls to the quote section"
       ]
     },
     {
       "id": "REQ-7",
-      "text": "Make the ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, and ContactSection responsive: all forms must have full-width inputs on mobile, proper label spacing, and submit buttons that are easy to tap.",
+      "text": "Build the Gallery section with a 3-column image grid where clicking an image opens a full-screen lightbox with previous/next navigation, keyboard support (arrow keys and Escape), and an image caption.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ]
       },
       "acceptanceCriteria": [
-        "All form inputs are full-width on screens < md",
-        "Labels and inputs have sufficient vertical spacing",
-        "Submit/CTA buttons are minimum 44px tall",
-        "No horizontal overflow on any form section"
+        "Gallery renders images in a 3-column responsive grid",
+        "Lightbox opens on image click with full-screen view",
+        "Arrow keys navigate between images; Escape closes the lightbox"
       ]
     },
     {
       "id": "REQ-8",
-      "text": "Make the Footer responsive: footer columns (company info, contact details, quick links, social icons) should stack vertically on mobile and render as a multi-column grid on tablet and desktop.",
+      "text": "Build the Contractor Zone section targeting contractors, displaying four partnership benefits (bulk pricing, fast delivery, quality, support) alongside a contractor inquiry form that collects name, phone, company, project type, and message, then opens a WhatsApp chat with the formatted details.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ]
       },
       "acceptanceCriteria": [
-        "Footer columns stack to 1 column on mobile",
-        "Social media icons and links are easily tappable (min 44px target)",
-        "No text overflow or clipping on small screens"
+        "Four benefit cards are displayed alongside the inquiry form",
+        "Form validates required fields before submission",
+        "WhatsApp link opens with formatted contractor inquiry details"
       ]
     },
     {
       "id": "REQ-9",
-      "text": "Make the AdminPanel responsive: the tabbed interface, product management table/list, and business settings form must be usable on mobile screens, with inputs and buttons accessible without horizontal scrolling.",
+      "text": "Build the Contact section displaying business info cards (phone, email, address, hours) alongside a Site Visit Booking Form (name, phone, address, preferred date/time, notes) and a Quick Estimate Form (name, phone, project type, budget, area). Both forms send details via WhatsApp. Block Quick Estimate submissions for full-home projects below the minimum budget.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ]
       },
       "acceptanceCriteria": [
-        "Admin tabs are scrollable or wrap on small screens",
-        "Product list switches to card layout on mobile if the table overflows",
-        "All form fields in business settings are full-width on mobile"
+        "Business info cards display phone, email, address, and hours",
+        "Site visit booking form sends details via WhatsApp on submit",
+        "Quick estimate form blocks low-budget full-home submissions with a clear message"
       ]
     },
     {
       "id": "REQ-10",
-      "text": "Ensure the FloatingWhatsAppButton does not overlap important content on mobile; reposition or resize it as needed so it does not block bottom navigation or form submit buttons.",
+      "text": "Add a fixed floating WhatsApp button in the bottom-right corner with an animated ping indicator that opens a pre-filled WhatsApp chat to number 919588046569.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
+        ],
+        "quotes": [
+          "WhatsApp integration (919588046569)"
         ]
       },
       "acceptanceCriteria": [
-        "Floating button is positioned so it does not obscure primary CTAs or form submit buttons on small screens",
-        "Button is easily tappable on mobile (min 48x48px)"
+        "Floating button is always visible in the bottom-right corner",
+        "Clicking opens WhatsApp chat to 919588046569 in a new tab",
+        "Animated ping indicator is visible"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Build the fixed top Navigation bar with smooth-scroll links to all page sections, company name and phone number CTA pulled from business settings, and a responsive mobile hamburger menu.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All nav links scroll smoothly to their respective sections",
+        "Mobile hamburger menu opens and closes correctly",
+        "Company name and phone number are displayed in the navbar"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Build the site Footer displaying the company logo, quick navigation links, and contact details (phone, email, address) with a copyright bar at the bottom.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer displays logo, nav links, and contact details",
+        "Copyright bar is shown at the bottom of the footer"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Build the PIN-protected Admin Panel (PIN: 2580) with tabs for managing products (add/edit/delete), business settings (company name, phone, email, address, hours), and WhatsApp message templates with a live preview editor.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Admin panel (PIN: 2580)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin panel is accessible only after entering PIN 2580",
+        "Products can be added, edited, and deleted via the admin panel",
+        "Business settings changes are persisted to the backend",
+        "WhatsApp message templates can be edited with placeholder tokens and previewed live"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Implement the backend Motoko actor with data models and endpoints for: product catalog (CRUD), business settings (contact info, WhatsApp templates), and role-based access control for admin operations.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Product catalog supports create, read, update, and delete operations",
+        "Business settings can be fetched and updated",
+        "Admin operations are protected by access control"
       ]
     }
   ],
   "constraints": [
-    "Do not alter backend logic or data models",
+    "WhatsApp number must be 919588046569",
+    "Admin panel PIN must be 2580",
     "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
-    "Preserve the existing luxury black-and-gold visual theme and all existing features"
+    "All Motoko logic must remain in a single actor in backend/main.mo"
   ],
   "nonGoals": [
-    "Adding new features or sections",
-    "Changing the visual theme, color palette, or typography",
-    "Modifying backend Motoko code"
+    "No payment processing or e-commerce checkout",
+    "No real-time chat or WebSocket features",
+    "No third-party authentication other than Internet Identity",
+    "No email delivery integration"
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Luxury interior showroom with warm lighting, wooden panels and premium furniture for hero background (hero-bg.dim_1920x1080.png)",
+      "Plywood stacks and timber sheets in a hardware store setting (service-plywood.dim_600x400.png)",
+      "Metal hardware components including hinges, handles and screws on a white background (service-hardware.dim_600x400.png)",
+      "Colorful laminate sheets fanned out showing various wood grain and solid color finishes (service-laminates.dim_600x400.png)",
+      "Modern electrical fittings and wiring accessories arranged neatly (service-electrical.dim_600x400.png)",
+      "Paint cans and color swatches in warm tones on a clean surface (service-paints.dim_600x400.png)",
+      "Finished luxury interior living room with modular furniture and elegant decor (service-interiors.dim_600x400.png)",
+      "Modern luxury kitchen with wooden cabinets and marble countertop (gallery-kitchen.dim_800x600.png)",
+      "Elegant wardrobe with sliding doors and interior shelving (gallery-wardrobe.dim_800x600.png)",
+      "Sophisticated living room interior with custom furniture and lighting (gallery-living.dim_800x600.png)",
+      "Premium bedroom interior with built-in storage and ambient lighting (gallery-bedroom.dim_800x600.png)",
+      "Modern office interior with wooden paneling and clean lines (gallery-office.dim_800x600.png)",
+      "Luxury bathroom with wooden vanity and premium fixtures (gallery-bathroom.dim_800x600.png)",
+      "Gold and white abstract logo mark for Mahaveer Plywood company (logo-icon.dim_200x200.png)"
+    ],
     "edits": []
   }
 }

@@ -1,125 +1,123 @@
-import { useState } from 'react';
-import { Menu, X, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Phone } from 'lucide-react';
 import { useBusinessSettings } from '../hooks/useBusinessSettings';
-import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
 
-interface NavItem {
-  label: string;
-  sectionId: string;
-}
-
-const navItems: NavItem[] = [
-  { label: 'Services', sectionId: 'services' },
-  { label: 'Products', sectionId: 'catalog' },
-  { label: 'Gallery', sectionId: 'gallery' },
-  { label: 'Pricing', sectionId: 'pricing' },
-  { label: 'Contractors', sectionId: 'contractors' },
-  { label: 'Contact', sectionId: 'contact' },
+const NAV_LINKS = [
+  { label: 'Services', href: '#services' },
+  { label: 'Products', href: '#products' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Gallery', href: '#gallery' },
+  { label: 'Contractors', href: '#contractor-zone' },
+  { label: 'Quote', href: '#quote-builder' },
+  { label: 'Contact', href: '#contact' },
 ];
 
-interface NavigationProps {
-  activeSection?: string;
-}
+export default function Navigation() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { data } = useBusinessSettings();
 
-export default function Navigation({ activeSection }: NavigationProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: settings } = useBusinessSettings();
-  const { openWhatsApp } = useWhatsAppContact();
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const companyName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
-    setMobileMenuOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-luxury border-b border-gold-200'
+          : 'bg-white/90 backdrop-blur-sm'
+      }`}
+    >
+      <div className="container-luxury">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <div className="flex items-center gap-2 min-w-0 flex-shrink">
+          <a
+            href="#hero"
+            onClick={e => { e.preventDefault(); handleNavClick('#hero'); }}
+            className="flex items-center gap-3 group"
+          >
             <img
-              src="/assets/generated/logo-icon.dim_88x88.png"
-              alt="Logo"
-              className="w-8 h-8 flex-shrink-0"
+              src="/assets/generated/logo-icon.dim_200x200.png"
+              alt="Mahaveer Logo"
+              className="h-10 w-10 object-contain"
             />
-            <span className="font-bold text-sm sm:text-base text-primary truncate max-w-[160px] sm:max-w-none">
-              {companyName}
-            </span>
-          </div>
+            <div className="hidden sm:block">
+              <div className="font-serif font-bold text-lg text-foreground leading-tight">
+                Mahaveer
+              </div>
+              <div className="text-xs text-gold-600 font-medium tracking-wider uppercase">
+                Plywood & Interiors
+              </div>
+            </div>
+          </a>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map(link => (
               <button
-                key={item.sectionId}
-                onClick={() => scrollToSection(item.sectionId)}
-                className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
-                  activeSection === item.sectionId
-                    ? 'text-primary bg-primary/10'
-                    : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
-                }`}
+                key={link.href}
+                onClick={() => handleNavClick(link.href)}
+                className="px-3 py-2 text-sm font-medium text-foreground/70 hover:text-gold-600 transition-colors rounded-lg hover:bg-gold-50"
               >
-                {item.label}
+                {link.label}
               </button>
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={() => openWhatsApp('Hello! I would like to know more about your services.')}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+          {/* Phone CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href={`tel:${data?.primaryPhone ?? '+919588046569'}`}
+              className="flex items-center gap-2 px-4 py-2 rounded-full btn-gold text-sm font-semibold"
             >
-              <Zap className="w-4 h-4" />
-              WhatsApp
-            </button>
+              <Phone className="h-4 w-4" />
+              <span>{data?.primaryPhone ?? '+91 95880 46569'}</span>
+            </a>
           </div>
 
           {/* Mobile Hamburger */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center w-11 h-11 rounded-lg text-foreground hover:bg-primary/10 transition-colors flex-shrink-0"
+            className="lg:hidden p-2 rounded-lg hover:bg-gold-50 transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-background border-t border-border shadow-lg">
-          <div className="px-4 py-3 space-y-1">
-            {navItems.map((item) => (
+      {isOpen && (
+        <div className="lg:hidden bg-white border-t border-gold-200 shadow-luxury-lg">
+          <div className="container-luxury py-4 flex flex-col gap-1">
+            {NAV_LINKS.map(link => (
               <button
-                key={item.sectionId}
-                onClick={() => scrollToSection(item.sectionId)}
-                className={`w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-colors min-h-[44px] ${
-                  activeSection === item.sectionId
-                    ? 'text-primary bg-primary/10'
-                    : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
-                }`}
+                key={link.href}
+                onClick={() => handleNavClick(link.href)}
+                className="text-left px-4 py-3 text-sm font-medium text-foreground/80 hover:text-gold-600 hover:bg-gold-50 rounded-lg transition-colors"
               >
-                {item.label}
+                {link.label}
               </button>
             ))}
-            <div className="pt-2 pb-1">
-              <button
-                onClick={() => {
-                  openWhatsApp('Hello! I would like to know more about your services.');
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg text-base font-semibold hover:bg-primary/90 transition-colors min-h-[44px]"
-              >
-                <Zap className="w-5 h-5" />
-                Contact on WhatsApp
-              </button>
-            </div>
+            <a
+              href={`tel:${data?.primaryPhone ?? '+919588046569'}`}
+              className="mt-2 flex items-center justify-center gap-2 px-4 py-3 rounded-full btn-gold text-sm font-semibold"
+            >
+              <Phone className="h-4 w-4" />
+              <span>{data?.primaryPhone ?? '+91 95880 46569'}</span>
+            </a>
           </div>
         </div>
       )}

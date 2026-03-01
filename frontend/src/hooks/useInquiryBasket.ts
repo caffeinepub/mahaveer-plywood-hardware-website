@@ -1,30 +1,24 @@
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 export function useInquiryBasket() {
   const [basket, setBasket] = useState<string[]>([]);
 
   const addToBasket = (productName: string) => {
-    if (!basket.includes(productName)) {
-      setBasket([...basket, productName]);
-      toast.success('Added to enquiry list');
-    }
+    setBasket(prev => {
+      if (prev.includes(productName)) return prev;
+      return [...prev, productName];
+    });
   };
 
   const removeFromBasket = (productName: string) => {
-    setBasket(basket.filter((item) => item !== productName));
-    toast.success('Removed from enquiry list');
+    setBasket(prev => prev.filter(name => name !== productName));
   };
 
   const clearBasket = () => {
     setBasket([]);
-    toast.success('Enquiry list cleared');
   };
 
-  return {
-    basket,
-    addToBasket,
-    removeFromBasket,
-    clearBasket,
-  };
+  const isInBasket = (productName: string) => basket.includes(productName);
+
+  return { basket, addToBasket, removeFromBasket, clearBasket, isInBasket };
 }

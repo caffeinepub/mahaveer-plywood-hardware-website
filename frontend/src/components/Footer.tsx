@@ -1,91 +1,118 @@
-import { Phone, Mail, MapPin, Heart } from 'lucide-react';
+import React from 'react';
+import { Phone, Mail, MapPin, Clock, Heart } from 'lucide-react';
 import { useBusinessSettings } from '../hooks/useBusinessSettings';
 
+const NAV_LINKS = [
+  { label: 'Services', href: '#services' },
+  { label: 'Products', href: '#products' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Gallery', href: '#gallery' },
+  { label: 'Contractors', href: '#contractor-zone' },
+  { label: 'Quote Builder', href: '#quote-builder' },
+  { label: 'Contact', href: '#contact' },
+];
+
 export default function Footer() {
-  const { data: settings } = useBusinessSettings();
+  const { data } = useBusinessSettings();
   const year = new Date().getFullYear();
-  const appId = encodeURIComponent(window.location.hostname || 'mahaveer-plywood');
+  const appId = encodeURIComponent(
+    typeof window !== 'undefined' ? window.location.hostname : 'mahaveer-plywood'
+  );
+
+  const handleNavClick = (href: string) => {
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <footer className="bg-background border-t border-border pt-10 sm:pt-14 pb-6 sm:pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-8 sm:mb-10">
-          {/* Brand Column */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+    <footer className="bg-foreground text-white">
+      <div className="container-luxury py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3 mb-4">
               <img
-                src="/assets/generated/logo-icon.dim_88x88.png"
-                alt="Logo"
-                className="w-8 h-8"
+                src="/assets/generated/logo-icon.dim_200x200.png"
+                alt="Mahaveer Logo"
+                className="h-12 w-12 object-contain"
               />
-              <span className="font-bold text-sm sm:text-base text-primary">
-                {settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS'}
-              </span>
+              <div>
+                <div className="font-serif font-bold text-xl text-white">Mahaveer</div>
+                <div className="text-gold-400 text-xs font-medium tracking-wider uppercase">
+                  Plywood & Interiors
+                </div>
+              </div>
             </div>
-            <p className="text-xs sm:text-sm text-foreground/60 mb-4 leading-relaxed">
-              Premium interior solutions — plywood, modular furniture, electrical, and paint services since 1995.
+            <p className="text-white/60 text-sm leading-relaxed mb-4 max-w-sm">
+              Pune's most trusted partner for premium interior materials, hardware, and complete
+              home solutions since 1997.
             </p>
+            <div className="flex gap-6 text-sm">
+              <div>
+                <div className="text-gold-400 font-bold font-serif text-xl">27+</div>
+                <div className="text-white/50 text-xs">Years Exp.</div>
+              </div>
+              <div>
+                <div className="text-gold-400 font-bold font-serif text-xl">5000+</div>
+                <div className="text-white/50 text-xs">Projects</div>
+              </div>
+            </div>
           </div>
 
-          {/* Services Column */}
+          {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-sm sm:text-base text-foreground mb-3 sm:mb-4">Services</h4>
+            <h4 className="font-serif font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {['Plywood & Hardware', 'Modular Kitchens', 'Wardrobes', 'Electrical Work', 'Paint Services'].map((item) => (
-                <li key={item}>
-                  <span className="text-xs sm:text-sm text-foreground/60 hover:text-primary transition-colors cursor-default">
-                    {item}
-                  </span>
+              {NAV_LINKS.map(link => (
+                <li key={link.href}>
+                  <button
+                    onClick={() => handleNavClick(link.href)}
+                    className="text-sm text-white/60 hover:text-gold-400 transition-colors"
+                  >
+                    {link.label}
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Products Column */}
+          {/* Contact */}
           <div>
-            <h4 className="font-bold text-sm sm:text-base text-foreground mb-3 sm:mb-4">Products</h4>
-            <ul className="space-y-2">
-              {['Plywood', 'Laminates', 'Hardware', 'Kitchen Modules', 'Wardrobe Systems'].map((item) => (
-                <li key={item}>
-                  <span className="text-xs sm:text-sm text-foreground/60 hover:text-primary transition-colors cursor-default">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Column */}
-          <div>
-            <h4 className="font-bold text-sm sm:text-base text-foreground mb-3 sm:mb-4">Contact</h4>
-            <ul className="space-y-2.5">
-              {settings?.primaryPhone && (
-                <li>
+            <h4 className="font-serif font-bold text-white mb-4">Contact</h4>
+            <ul className="space-y-3">
+              {data?.primaryPhone && (
+                <li className="flex items-start gap-2">
+                  <Phone className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
                   <a
-                    href={`tel:${settings.primaryPhone}`}
-                    className="flex items-center gap-2 text-xs sm:text-sm text-foreground/60 hover:text-primary transition-colors min-h-[44px] py-1"
+                    href={`tel:${data.primaryPhone}`}
+                    className="text-sm text-white/60 hover:text-gold-400 transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 flex-shrink-0 text-primary" />
-                    {settings.primaryPhone}
+                    {data.primaryPhone}
                   </a>
                 </li>
               )}
-              {settings?.email && (
-                <li>
+              {data?.email && (
+                <li className="flex items-start gap-2">
+                  <Mail className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
                   <a
-                    href={`mailto:${settings.email}`}
-                    className="flex items-center gap-2 text-xs sm:text-sm text-foreground/60 hover:text-primary transition-colors min-h-[44px] py-1 break-all"
+                    href={`mailto:${data.email}`}
+                    className="text-sm text-white/60 hover:text-gold-400 transition-colors"
                   >
-                    <Mail className="w-3.5 h-3.5 flex-shrink-0 text-primary" />
-                    {settings.email}
+                    {data.email}
                   </a>
                 </li>
               )}
-              {settings?.address && (
-                <li className="flex items-start gap-2 text-xs sm:text-sm text-foreground/60">
-                  <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-primary mt-0.5" />
-                  <span className="break-words">{settings.address}</span>
+              {data?.address && (
+                <li className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-white/60">{data.address}</span>
+                </li>
+              )}
+              {data?.businessHours && (
+                <li className="flex items-start gap-2">
+                  <Clock className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-white/60">{data.businessHours}</span>
                 </li>
               )}
             </ul>
@@ -93,19 +120,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border pt-5 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <p className="text-xs text-foreground/40">
-            © {year} {settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS'}. All rights reserved.
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-white/40">
+            © {year} {data?.companyName ?? 'Mahaveer Plywood & Interiors'}. All rights reserved.
           </p>
-          <p className="text-xs text-foreground/40 flex items-center gap-1">
+          <p className="text-sm text-white/40 flex items-center gap-1">
             Built with{' '}
-            <Heart className="w-3 h-3 text-primary fill-primary" />{' '}
+            <Heart className="w-3.5 h-3.5 text-gold-400 fill-gold-400 mx-0.5" />
             using{' '}
             <a
               href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${appId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="text-gold-400 hover:underline font-medium"
             >
               caffeine.ai
             </a>

@@ -1,80 +1,83 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface LightboxImage {
+interface GalleryImage {
   src: string;
   title: string;
   description: string;
 }
 
 interface ImageLightboxProps {
-  image: LightboxImage;
+  images: GalleryImage[];
+  currentIndex: number;
   onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
+  onNavigate: (index: number) => void;
 }
 
-export default function ImageLightbox({ image, onClose, onPrev, onNext }: ImageLightboxProps) {
+export default function ImageLightbox({ images, currentIndex, onClose, onNavigate }: ImageLightboxProps) {
+  const current = images[currentIndex];
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft') onPrev();
-      if (e.key === 'ArrowRight') onNext();
+      if (e.key === 'ArrowLeft') onNavigate(Math.max(0, currentIndex - 1));
+      if (e.key === 'ArrowRight') onNavigate(Math.min(images.length - 1, currentIndex + 1));
     };
-    document.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [onClose, onPrev, onNext]);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [currentIndex, images.length, onClose, onNavigate]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
       onClick={onClose}
     >
-      {/* Close Button */}
-      <button
-        onClick={onClose}
-        className="absolute top-3 right-3 sm:top-4 sm:right-4 w-11 h-11 flex items-center justify-center bg-secondary/80 hover:bg-secondary rounded-full transition-colors z-10"
-        aria-label="Close"
-      >
-        <X className="w-5 h-5 text-foreground" />
-      </button>
-
-      {/* Prev Button */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center bg-secondary/80 hover:bg-secondary rounded-full transition-colors z-10"
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
-      </button>
-
-      {/* Next Button */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center bg-secondary/80 hover:bg-secondary rounded-full transition-colors z-10"
-        aria-label="Next"
-      >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
-      </button>
-
-      {/* Image Container */}
+      {/* Content */}
       <div
-        className="relative max-w-[95vw] max-h-[90vh] w-full mx-4 sm:mx-12"
-        onClick={(e) => e.stopPropagation()}
+        className="relative max-w-5xl w-full mx-4"
+        onClick={e => e.stopPropagation()}
       >
-        <img
-          src={image.src}
-          alt={image.title}
-          className="w-full max-h-[75vh] object-contain rounded-xl"
-        />
-        <div className="mt-3 text-center px-2">
-          <h3 className="text-base sm:text-lg font-bold text-foreground">{image.title}</h3>
-          <p className="text-xs sm:text-sm text-foreground/60 mt-1">{image.description}</p>
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        {/* Image */}
+        <div className="relative rounded-2xl overflow-hidden bg-black">
+          <img
+            src={current.src}
+            alt={current.title}
+            className="w-full max-h-[70vh] object-contain"
+          />
         </div>
+
+        {/* Caption */}
+        <div className="mt-4 text-center">
+          <h3 className="text-white font-serif font-bold text-xl">{current.title}</h3>
+          <p className="text-white/70 text-sm mt-1">{current.description}</p>
+          <p className="text-white/40 text-xs mt-2">{currentIndex + 1} / {images.length}</p>
+        </div>
+
+        {/* Navigation */}
+        {currentIndex > 0 && (
+          <button
+            onClick={() => onNavigate(currentIndex - 1)}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+        )}
+        {currentIndex < images.length - 1 && (
+          <button
+            onClick={() => onNavigate(currentIndex + 1)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        )}
       </div>
     </div>
   );

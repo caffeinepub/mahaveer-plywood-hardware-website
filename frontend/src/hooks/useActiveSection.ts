@@ -1,41 +1,34 @@
 import { useState, useEffect } from 'react';
 
-export function useActiveSection() {
-  const [activeSection, setActiveSection] = useState('home');
+export function useActiveSection(sectionIds: string[]) {
+  const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
-    const sections = ['home', 'services', 'products', 'projects', 'packages', 'contractor', 'contact'];
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: '-20% 0px -70% 0px',
-        threshold: 0,
-      }
-    );
+    const observers: IntersectionObserver[] = [];
 
-    sections.forEach((id) => {
+    sectionIds.forEach(id => {
       const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
-      }
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setActiveSection(id);
+            }
+          });
+        },
+        { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' }
+      );
+
+      observer.observe(element);
+      observers.push(observer);
     });
 
     return () => {
-      sections.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
-      });
+      observers.forEach(obs => obs.disconnect());
     };
-  }, []);
+  }, [sectionIds]);
 
   return activeSection;
 }

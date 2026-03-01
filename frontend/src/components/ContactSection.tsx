@@ -1,125 +1,94 @@
-import { Phone, Mail, MapPin, Clock, PhoneCall } from 'lucide-react';
+import React from 'react';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { useBusinessSettings } from '../hooks/useBusinessSettings';
 import SiteVisitBookingForm from './SiteVisitBookingForm';
-import { Skeleton } from '@/components/ui/skeleton';
+import QuickEstimateForm from './QuickEstimateForm';
 
 export default function ContactSection() {
-  const { data: settings, isLoading } = useBusinessSettings();
+  const { data } = useBusinessSettings();
+
+  const INFO_CARDS = [
+    {
+      icon: Phone,
+      title: 'Call Us',
+      lines: [data?.primaryPhone ?? '+91 95880 46569', data?.secondaryPhone ?? ''],
+      href: `tel:${data?.primaryPhone ?? '+919588046569'}`,
+    },
+    {
+      icon: Mail,
+      title: 'Email Us',
+      lines: [data?.email ?? 'info@mahaveerplywood.com'],
+      href: `mailto:${data?.email ?? 'info@mahaveerplywood.com'}`,
+    },
+    {
+      icon: MapPin,
+      title: 'Visit Us',
+      lines: [data?.address ?? 'Shop No. 12, Main Market, Pune, Maharashtra 411001'],
+      href: '#',
+    },
+    {
+      icon: Clock,
+      title: 'Business Hours',
+      lines: [data?.businessHours ?? 'Mon–Sat: 9:00 AM – 7:00 PM'],
+      href: '#',
+    },
+  ];
 
   return (
-    <section id="contact" className="py-16 sm:py-20 lg:py-24 bg-secondary/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="section-padding bg-cream-100">
+      <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-            Contact Us
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-100 border border-gold-300 mb-4">
+            <span className="text-gold-700 text-sm font-semibold tracking-wide uppercase">Get In Touch</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Get In Touch
-          </h2>
-          <p className="text-sm sm:text-base text-foreground/60 max-w-2xl mx-auto">
-            Visit our showroom or reach out to us for any inquiries.
+          <h2 className="section-title">Contact Us</h2>
+          <p className="section-subtitle">
+            Ready to transform your space? Reach out for a free consultation
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Contact Info */}
-          <div className="space-y-4 sm:space-y-5">
-            {/* Address */}
-            <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-border rounded-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-5 h-5 text-primary" />
+        {/* Info Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {INFO_CARDS.map(({ icon: Icon, title, lines, href }) => (
+            <a
+              key={title}
+              href={href}
+              className="luxury-card p-6 text-center group hover:border-gold-400 transition-all"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gold-100 flex items-center justify-center mx-auto mb-3 group-hover:bg-gold-200 transition-colors">
+                <Icon className="h-6 w-6 text-gold-600" />
               </div>
-              <div className="min-w-0">
-                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1">Address</h3>
-                {isLoading ? (
-                  <Skeleton className="h-4 w-48" />
-                ) : (
-                  <p className="text-xs sm:text-sm text-foreground/60 break-words">
-                    {settings?.address || 'Address not available'}
-                  </p>
-                )}
-              </div>
-            </div>
+              <h3 className="font-serif font-bold text-foreground mb-2">{title}</h3>
+              {lines.filter(Boolean).map((line, i) => (
+                <p key={i} className="text-muted-foreground text-sm">{line}</p>
+              ))}
+            </a>
+          ))}
+        </div>
 
-            {/* Phone */}
-            <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-border rounded-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Phone className="w-5 h-5 text-primary" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1">Phone</h3>
-                {isLoading ? (
-                  <div className="space-y-1">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-4 w-28" />
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    {settings?.primaryPhone && (
-                      <a
-                        href={`tel:${settings.primaryPhone}`}
-                        className="flex items-center gap-1.5 text-xs sm:text-sm text-primary hover:underline"
-                      >
-                        <PhoneCall className="w-3.5 h-3.5 flex-shrink-0" />
-                        {settings.primaryPhone}
-                      </a>
-                    )}
-                    {settings?.secondaryPhone && (
-                      <a
-                        href={`tel:${settings.secondaryPhone}`}
-                        className="flex items-center gap-1.5 text-xs sm:text-sm text-foreground/60 hover:text-primary hover:underline"
-                      >
-                        <PhoneCall className="w-3.5 h-3.5 flex-shrink-0" />
-                        {settings.secondaryPhone}
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-border rounded-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Mail className="w-5 h-5 text-primary" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1">Email</h3>
-                {isLoading ? (
-                  <Skeleton className="h-4 w-40" />
-                ) : (
-                  <a
-                    href={`mailto:${settings?.email}`}
-                    className="text-xs sm:text-sm text-primary hover:underline break-all"
-                  >
-                    {settings?.email || 'Email not available'}
-                  </a>
-                )}
-              </div>
-            </div>
-
-            {/* Business Hours */}
-            <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-border rounded-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Clock className="w-5 h-5 text-primary" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1">Business Hours</h3>
-                {isLoading ? (
-                  <Skeleton className="h-4 w-44" />
-                ) : (
-                  <p className="text-xs sm:text-sm text-foreground/60">
-                    {settings?.businessHours || 'Hours not available'}
-                  </p>
-                )}
-              </div>
-            </div>
+        {/* Forms */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Site Visit Form */}
+          <div className="luxury-card p-8">
+            <h3 className="font-serif text-2xl font-bold text-foreground mb-2">
+              Book a Free Site Visit
+            </h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              Our expert will visit your site and provide a detailed consultation
+            </p>
+            <SiteVisitBookingForm />
           </div>
 
-          {/* Site Visit Form */}
-          <div>
-            <SiteVisitBookingForm />
+          {/* Quick Estimate Form */}
+          <div className="luxury-card p-8">
+            <h3 className="font-serif text-2xl font-bold text-foreground mb-2">
+              Quick Estimate
+            </h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              Get a rough estimate for your project in minutes
+            </p>
+            <QuickEstimateForm />
           </div>
         </div>
       </div>

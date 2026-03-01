@@ -1,3 +1,2 @@
-// This file is intentionally empty as all queries are handled in feature-specific hooks
-// (useWhatsAppContact, useProductCatalog, useInquiryBasket)
+// All queries are handled in feature-specific hooks
 export {};

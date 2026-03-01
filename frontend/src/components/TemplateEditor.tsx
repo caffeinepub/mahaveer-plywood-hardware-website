@@ -1,63 +1,87 @@
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { useWhatsAppTemplates } from '@/hooks/useWhatsAppTemplates';
+import React, { useState } from 'react';
+import { Eye, Edit3 } from 'lucide-react';
 
 interface TemplateEditorProps {
   templateName: string;
   templateValue: string;
-  onChange: (value: string) => void;
-  availablePlaceholders: Array<{ key: string; description: string }>;
+  availablePlaceholders: string[];
   sampleData: Record<string, string>;
+  onChange: (value: string) => void;
 }
 
 export default function TemplateEditor({
   templateName,
   templateValue,
-  onChange,
   availablePlaceholders,
   sampleData,
+  onChange,
 }: TemplateEditorProps) {
-  const { replacePlaceholders } = useWhatsAppTemplates();
+  const [isPreview, setIsPreview] = useState(false);
 
-  const previewMessage = replacePlaceholders(templateValue, sampleData);
+  const getPreview = () => {
+    let preview = templateValue;
+    Object.entries(sampleData).forEach(([key, value]) => {
+      preview = preview.replace(new RegExp(`{{${key}}}`, 'g'), value);
+    });
+    return preview;
+  };
+
+  const insertPlaceholder = (placeholder: string) => {
+    onChange(templateValue + `{{${placeholder}}}`);
+  };
 
   return (
-    <div className="space-y-3">
-      <div>
-        <Label htmlFor={templateName} className="text-sm font-medium mb-2 block">
-          {templateName}
-        </Label>
-        <Textarea
-          id={templateName}
-          value={templateValue}
-          onChange={(e) => onChange(e.target.value)}
-          className="min-h-[120px] rounded-14 border-white/10 bg-white/3 text-[13px] font-mono"
-          placeholder="Enter template with placeholders..."
-        />
+    <div className="bg-white border border-gold-200 rounded-2xl shadow-luxury overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gold-100">
+        <h4 className="font-serif font-bold text-foreground">{templateName}</h4>
+        <button
+          onClick={() => setIsPreview(!isPreview)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gold-200 text-gold-700 hover:bg-gold-50 transition-colors"
+        >
+          {isPreview ? (
+            <>
+              <Edit3 className="w-3.5 h-3.5" />
+              Edit
+            </>
+          ) : (
+            <>
+              <Eye className="w-3.5 h-3.5" />
+              Preview
+            </>
+          )}
+        </button>
       </div>
 
-      <div>
-        <Label className="text-xs text-muted-foreground mb-2 block">Available Placeholders:</Label>
-        <div className="flex flex-wrap gap-2">
-          {availablePlaceholders.map((placeholder) => (
-            <Badge
-              key={placeholder.key}
-              variant="outline"
-              className="text-xs bg-gold/8 border-gold/20 cursor-help"
-              title={placeholder.description}
+      <div className="p-5">
+        {/* Placeholder Badges */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {availablePlaceholders.map(ph => (
+            <button
+              key={ph}
+              onClick={() => insertPlaceholder(ph)}
+              className="px-2.5 py-1 rounded-full bg-gold-100 text-gold-700 text-xs font-mono font-medium hover:bg-gold-200 transition-colors"
+              title={`Insert {{${ph}}}`}
             >
-              {`{${placeholder.key}}`}
-            </Badge>
+              {`{{${ph}}}`}
+            </button>
           ))}
         </div>
-      </div>
 
-      <div className="p-3 rounded-14 border border-white/10 bg-white/2">
-        <Label className="text-xs text-muted-foreground mb-2 block">Preview (with sample data):</Label>
-        <pre className="text-xs text-foreground whitespace-pre-wrap font-mono leading-relaxed">
-          {previewMessage}
-        </pre>
+        {/* Editor / Preview */}
+        {isPreview ? (
+          <div className="min-h-32 p-4 rounded-xl bg-gold-50 border border-gold-200 text-sm text-foreground whitespace-pre-wrap font-mono">
+            {getPreview() || <span className="text-muted-foreground italic">No template content</span>}
+          </div>
+        ) : (
+          <textarea
+            value={templateValue}
+            onChange={e => onChange(e.target.value)}
+            rows={6}
+            className="w-full px-4 py-3 rounded-xl border border-gold-200 bg-white focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent text-sm font-mono resize-y transition-all"
+            placeholder={`Enter ${templateName} template...`}
+          />
+        )}
       </div>
     </div>
   );

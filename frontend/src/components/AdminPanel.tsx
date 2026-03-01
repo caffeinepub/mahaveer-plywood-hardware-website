@@ -1,463 +1,438 @@
 import { useState } from 'react';
-import { Settings, Package, X, Plus, Trash2, Save, Eye, EyeOff, Lock } from 'lucide-react';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
-import { Category, Product, BusinessSettings } from '../backend';
+import { Settings, Package, Lock, Plus, Trash2, Save, Eye, EyeOff, Loader2, X } from 'lucide-react';
+import { useBusinessSettings, useUpdateBusinessSettings } from '../hooks/useBusinessSettings';
 import TemplateEditor from './TemplateEditor';
+import type { BusinessSettings, Product } from '../backend';
+import { Category } from '../backend';
 
-const ADMIN_PIN = '1234';
+const ADMIN_PIN = '2580';
 
-interface LocalProduct extends Product {
-  id: string;
+const categoryOptions: { value: Category; label: string }[] = [
+  { value: Category.plywood, label: 'Plywood' },
+  { value: Category.hardware, label: 'Hardware' },
+  { value: Category.laminates, label: 'Laminates' },
+  { value: Category.kitchen, label: 'Kitchen' },
+  { value: Category.wardrobe, label: 'Wardrobe' },
+  { value: Category.electricals, label: 'Electricals' },
+  { value: Category.paints, label: 'Paints' },
+];
+
+interface AdminPanelProps {
+  onClose?: () => void;
 }
 
-const DEFAULT_SETTINGS: BusinessSettings = {
-  companyName: 'MAHAVEER PLYWOOD & INTERIORS',
-  primaryPhone: '',
-  secondaryPhone: '',
-  email: '',
-  businessHours: 'Mon-Sat: 9 AM - 7 PM',
-  address: 'Sagwara, Dungarpur, Rajasthan',
-  whatsappNumber: '',
-  estimateMessageTemplate: 'Hello {companyName},\n\nQuick Estimate Request:\nName: {name}\nPhone: {phone}\nRequirement: {requirement}\nBudget: {budget}\nMessage: {message}\n\nPlease share premium options + approximate quote.',
-  contractorInquiryTemplate: 'Hello {companyName},\n\nContractor Enquiry:\nCompany: {companyName}\nContact: {contactName}\nPhone: {phone}\nProject Type: {projectType}\nQuantity: {quantity}\nMessage: {message}\n\nPlease share bulk pricing & availability.',
-  siteVisitTemplate: 'Hello {companyName},\n\nSite Visit Request:\nName: {name}\nPhone: {phone}\nPreferred Date: {date}\nWork Type: {workType}\nAddress/Area: {address}\n\nPlease confirm suitable time for site visit.',
-  productInquiryTemplate: 'Hello {companyName},\n\nProduct Inquiry:\n• {product}\n\nCity/Area:\nQuantity:\nBrand preference (if any):',
-  quoteBuilderTemplate: 'Hello {companyName},\n\nPremium Quote Request:\n\nSelected Modules:\n{modules}\n\nClient Details:\nName: {name}\nPhone: {phone}\n\nPlease provide detailed quotation.',
-};
-
-export default function AdminPanel() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function AdminPanel({ onClose }: AdminPanelProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pin, setPin] = useState('');
   const [pinError, setPinError] = useState('');
-  const [activeTab, setActiveTab] = useState<'products' | 'settings'>('products');
   const [showPin, setShowPin] = useState(false);
+  const [activeTab, setActiveTab] = useState<'products' | 'settings' | 'templates'>('products');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [newProduct, setNewProduct] = useState<Partial<Product>>({});
 
-  const { data: settings, updateSettings, isUpdating } = useBusinessSettings();
+  const { data: settings } = useBusinessSettings();
+  const updateSettingsMutation = useUpdateBusinessSettings();
 
-  // Local products state (localStorage-based)
-  const [localProducts, setLocalProducts] = useState<LocalProduct[]>(() => {
-    try {
-      const stored = localStorage.getItem('admin_products');
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    category: Category.plywood,
-    description: '',
-    specifications: '',
-    image: '',
-  });
-
-  // Business settings form state
-  const [settingsForm, setSettingsForm] = useState<BusinessSettings>(() => ({
-    ...DEFAULT_SETTINGS,
-    ...(settings || {}),
-  }));
+  const [settingsForm, setSettingsForm] = useState<Partial<BusinessSettings>>({});
 
   const handlePinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (pin === ADMIN_PIN) {
       setIsAuthenticated(true);
       setPinError('');
-      // Sync settings form with current settings
-      if (settings) {
-        setSettingsForm({ ...DEFAULT_SETTINGS, ...settings });
-      }
+      if (settings) setSettingsForm(settings);
     } else {
       setPinError('Incorrect PIN. Please try again.');
     }
   };
 
-  const saveProducts = (products: LocalProduct[]) => {
-    setLocalProducts(products);
-    localStorage.setItem('admin_products', JSON.stringify(products));
+  const handleLock = () => {
+    setIsAuthenticated(false);
+    setPin('');
+    if (onClose) onClose();
   };
 
   const handleAddProduct = () => {
-    if (!newProduct.name.trim()) return;
-    const product: LocalProduct = {
-      ...newProduct,
-      id: Date.now().toString(),
+    if (!newProduct.name || !newProduct.category) return;
+    const product: Product = {
+      name: newProduct.name,
+      category: newProduct.category as Category,
+      description: newProduct.description || '',
+      specifications: newProduct.specifications || '',
+      image: newProduct.image || '',
     };
-    saveProducts([...localProducts, product]);
-    setNewProduct({
-      name: '',
-      category: Category.plywood,
-      description: '',
-      specifications: '',
-      image: '',
-    });
+    const updated = [...products, product];
+    setProducts(updated);
+    localStorage.setItem('adminProducts', JSON.stringify(updated));
+    setNewProduct({});
   };
 
-  const handleDeleteProduct = (id: string) => {
-    saveProducts(localProducts.filter((p) => p.id !== id));
+  const handleRemoveProduct = (name: string) => {
+    const updated = products.filter((p) => p.name !== name);
+    setProducts(updated);
+    localStorage.setItem('adminProducts', JSON.stringify(updated));
   };
 
   const handleSaveSettings = async () => {
-    await updateSettings(settingsForm);
+    if (!settingsForm) return;
+    await updateSettingsMutation.mutateAsync(settingsForm as BusinessSettings);
   };
 
-  if (!isOpen) {
+  const isSaving = updateSettingsMutation.isPending;
+
+  const inputClass =
+    'w-full px-3 py-2 bg-white border border-gold-200 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-sm';
+  const labelClass = 'block text-xs font-medium text-foreground/70 mb-1';
+
+  if (!isAuthenticated) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-40 flex items-center justify-center w-11 h-11 bg-secondary border border-border hover:border-primary/40 text-foreground/60 hover:text-primary rounded-full shadow-md transition-all duration-300"
-        aria-label="Admin Panel"
-      >
-        <Settings className="w-5 h-5" />
-      </button>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white border border-gold-200 rounded-2xl shadow-luxury-xl p-8 w-full max-w-sm mx-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gold-100 rounded-xl flex items-center justify-center">
+                <Lock className="w-5 h-5 text-gold-600" />
+              </div>
+              <div>
+                <h2 className="font-serif text-xl font-bold text-foreground">Admin Access</h2>
+                <p className="text-xs text-muted-foreground">Enter your PIN to continue</p>
+              </div>
+            </div>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-1.5 rounded-lg hover:bg-gold-50 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+          <form onSubmit={handlePinSubmit} className="space-y-4">
+            <div className="relative">
+              <input
+                type={showPin ? 'text' : 'password'}
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                placeholder="Enter PIN"
+                className={inputClass}
+                maxLength={6}
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setShowPin(!showPin)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {pinError && <p className="text-xs text-destructive">{pinError}</p>}
+            <button
+              type="submit"
+              className="w-full py-2.5 btn-gold font-semibold text-sm rounded-xl transition-all"
+            >
+              Unlock
+            </button>
+          </form>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-end bg-background/60 backdrop-blur-sm p-0 sm:p-4">
-      <div className="w-full sm:w-[600px] h-full sm:h-auto sm:max-h-[90vh] bg-card border-0 sm:border border-border sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-border flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Settings className="w-5 h-5 text-primary" />
-            <h2 className="text-base sm:text-lg font-bold text-foreground">Admin Panel</h2>
-          </div>
-          <button
-            onClick={() => { setIsOpen(false); setIsAuthenticated(false); setPin(''); }}
-            className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors"
-          >
-            <X className="w-5 h-5 text-foreground/60" />
-          </button>
+    <div className="fixed inset-0 z-50 flex flex-col bg-white overflow-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-gold-200 bg-white">
+        <div className="flex items-center gap-3">
+          <Settings className="w-5 h-5 text-gold-600" />
+          <h1 className="font-serif text-xl font-bold text-foreground">Admin Panel</h1>
         </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleLock}
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Lock className="w-4 h-4" />
+            Lock
+          </button>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg hover:bg-gold-50 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+      </div>
 
-        {/* PIN Authentication */}
-        {!isAuthenticated ? (
-          <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
-            <div className="w-full max-w-xs">
-              <div className="flex items-center justify-center w-14 h-14 bg-primary/10 rounded-2xl mx-auto mb-4">
-                <Lock className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold text-foreground text-center mb-1">Admin Access</h3>
-              <p className="text-sm text-foreground/60 text-center mb-6">Enter PIN to continue</p>
-              <form onSubmit={handlePinSubmit} className="space-y-4">
-                <div className="relative">
+      {/* Tabs */}
+      <div className="flex border-b border-gold-200 bg-white px-6">
+        {(['products', 'settings', 'templates'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-3 text-sm font-medium capitalize border-b-2 transition-colors ${
+              activeTab === tab
+                ? 'border-gold-500 text-gold-600'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-auto p-6 bg-cream-100">
+        {/* Products Tab */}
+        {activeTab === 'products' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="bg-white border border-gold-200 rounded-2xl p-6 shadow-luxury">
+              <h3 className="font-serif font-bold text-foreground mb-4 flex items-center gap-2">
+                <Plus className="w-4 h-4 text-gold-600" />
+                Add New Product
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className={labelClass}>Product Name *</label>
                   <input
-                    type={showPin ? 'text' : 'password'}
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value)}
-                    placeholder="Enter PIN"
-                    className="w-full px-4 py-3 bg-background border border-border rounded-xl text-center text-lg font-mono tracking-widest text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[52px]"
-                    maxLength={6}
+                    type="text"
+                    value={newProduct.name || ''}
+                    onChange={(e) => setNewProduct((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="Product name"
+                    className={inputClass}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPin(!showPin)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground/70"
-                  >
-                    {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
                 </div>
-                {pinError && (
-                  <p className="text-xs text-destructive text-center">{pinError}</p>
-                )}
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors min-h-[48px]"
-                >
-                  Unlock
-                </button>
-              </form>
-            </div>
-          </div>
-        ) : (
-          <>
-            {/* Tabs - scrollable on mobile */}
-            <div className="flex border-b border-border flex-shrink-0 overflow-x-auto scrollbar-hide">
+                <div>
+                  <label className={labelClass}>Category *</label>
+                  <select
+                    value={newProduct.category || ''}
+                    onChange={(e) => setNewProduct((p) => ({ ...p, category: e.target.value as Category }))}
+                    className={inputClass}
+                  >
+                    <option value="">Select category</option>
+                    {categoryOptions.map((c) => (
+                      <option key={c.value} value={c.value}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className={labelClass}>Description</label>
+                  <input
+                    type="text"
+                    value={newProduct.description || ''}
+                    onChange={(e) => setNewProduct((p) => ({ ...p, description: e.target.value }))}
+                    placeholder="Short description"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Specifications</label>
+                  <input
+                    type="text"
+                    value={newProduct.specifications || ''}
+                    onChange={(e) => setNewProduct((p) => ({ ...p, specifications: e.target.value }))}
+                    placeholder="e.g. 18mm, BWR Grade"
+                    className={inputClass}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Image URL</label>
+                  <input
+                    type="text"
+                    value={newProduct.image || ''}
+                    onChange={(e) => setNewProduct((p) => ({ ...p, image: e.target.value }))}
+                    placeholder="https://..."
+                    className={inputClass}
+                  />
+                </div>
+              </div>
               <button
-                onClick={() => setActiveTab('products')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
-                  activeTab === 'products'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-foreground/60 hover:text-foreground'
-                }`}
+                onClick={handleAddProduct}
+                disabled={!newProduct.name || !newProduct.category}
+                className="flex items-center gap-2 px-4 py-2 btn-gold text-sm font-semibold rounded-xl transition-all disabled:opacity-50"
               >
-                <Package className="w-4 h-4" />
-                Products
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
-                  activeTab === 'settings'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-foreground/60 hover:text-foreground'
-                }`}
-              >
-                <Settings className="w-4 h-4" />
-                Business Settings
+                <Plus className="w-4 h-4" />
+                Add Product
               </button>
             </div>
 
-            {/* Tab Content */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-5">
-              {activeTab === 'products' && (
-                <div className="space-y-5 sm:space-y-6">
-                  {/* Add Product Form */}
-                  <div className="bg-secondary/30 rounded-xl p-4">
-                    <h3 className="text-sm font-semibold text-foreground mb-3">Add New Product</h3>
-                    <div className="space-y-3">
-                      <input
-                        type="text"
-                        value={newProduct.name}
-                        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                        placeholder="Product name"
-                        className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      />
-                      <select
-                        value={newProduct.category}
-                        onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value as Category })}
-                        className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      >
-                        {Object.values(Category).map((cat) => (
-                          <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                      </select>
-                      <textarea
-                        value={newProduct.description}
-                        onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                        placeholder="Description"
-                        rows={2}
-                        className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-                      />
-                      <input
-                        type="text"
-                        value={newProduct.specifications}
-                        onChange={(e) => setNewProduct({ ...newProduct, specifications: e.target.value })}
-                        placeholder="Specifications"
-                        className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      />
-                      <input
-                        type="text"
-                        value={newProduct.image}
-                        onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                        placeholder="Image URL (optional)"
-                        className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                      />
+            {/* Product List */}
+            {products.length > 0 && (
+              <div className="bg-white border border-gold-200 rounded-2xl shadow-luxury overflow-hidden">
+                <div className="p-4 border-b border-gold-200">
+                  <h3 className="font-serif font-bold text-foreground flex items-center gap-2">
+                    <Package className="w-4 h-4 text-gold-600" />
+                    Products ({products.length})
+                  </h3>
+                </div>
+                <div className="divide-y divide-gold-100">
+                  {products.map((product) => (
+                    <div key={product.name} className="flex items-center justify-between p-4">
+                      <div>
+                        <p className="font-medium text-foreground text-sm">{product.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {product.category} · {product.description}
+                        </p>
+                      </div>
                       <button
-                        onClick={handleAddProduct}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors min-h-[44px]"
+                        onClick={() => handleRemoveProduct(product.name)}
+                        className="p-1.5 text-muted-foreground hover:text-destructive transition-colors"
                       >
-                        <Plus className="w-4 h-4" />
-                        Add Product
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  </div>
-
-                  {/* Product List */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground mb-3">
-                      Products ({localProducts.length})
-                    </h3>
-                    {localProducts.length === 0 ? (
-                      <p className="text-sm text-foreground/50 text-center py-8">
-                        No products added yet.
-                      </p>
-                    ) : (
-                      <div className="space-y-2">
-                        {localProducts.map((product) => (
-                          <div
-                            key={product.id}
-                            className="flex items-start gap-3 p-3 bg-secondary/20 border border-border rounded-xl"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
-                              <p className="text-xs text-foreground/50 capitalize">{product.category}</p>
-                              {product.description && (
-                                <p className="text-xs text-foreground/40 mt-0.5 line-clamp-2">{product.description}</p>
-                              )}
-                            </div>
-                            <button
-                              onClick={() => handleDeleteProduct(product.id)}
-                              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
+          </div>
+        )}
 
-              {activeTab === 'settings' && (
-                <div className="space-y-5 sm:space-y-6">
-                  {/* Business Info */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground mb-3">Business Information</h3>
-                    <div className="space-y-3">
-                      {[
-                        { key: 'companyName', label: 'Company Name', type: 'text' },
-                        { key: 'primaryPhone', label: 'Primary Phone', type: 'tel' },
-                        { key: 'secondaryPhone', label: 'Secondary Phone', type: 'tel' },
-                        { key: 'email', label: 'Email', type: 'email' },
-                        { key: 'whatsappNumber', label: 'WhatsApp Number', type: 'tel' },
-                        { key: 'businessHours', label: 'Business Hours', type: 'text' },
-                      ].map(({ key, label, type }) => (
-                        <div key={key}>
-                          <label className="block text-xs font-medium text-foreground/70 mb-1">
-                            {label}
-                          </label>
-                          <input
-                            type={type}
-                            value={settingsForm[key as keyof BusinessSettings]}
-                            onChange={(e) => setSettingsForm({ ...settingsForm, [key]: e.target.value })}
-                            className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[44px]"
-                          />
-                        </div>
-                      ))}
-                      <div>
-                        <label className="block text-xs font-medium text-foreground/70 mb-1">
-                          Address
-                        </label>
-                        <textarea
-                          value={settingsForm.address}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, address: e.target.value })}
-                          rows={2}
-                          className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* WhatsApp Templates */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground mb-3">WhatsApp Templates</h3>
-                    <div className="space-y-4">
-                      <TemplateEditor
-                        templateName="Estimate Request Template"
-                        templateValue={settingsForm.estimateMessageTemplate}
-                        onChange={(v) => setSettingsForm({ ...settingsForm, estimateMessageTemplate: v })}
-                        availablePlaceholders={[
-                          { key: 'companyName', description: 'Company name' },
-                          { key: 'name', description: 'Customer name' },
-                          { key: 'phone', description: 'Customer phone' },
-                          { key: 'requirement', description: 'Service requirement' },
-                          { key: 'budget', description: 'Budget range' },
-                          { key: 'message', description: 'Additional message' },
-                        ]}
-                        sampleData={{
-                          companyName: 'MAHAVEER PLYWOOD',
-                          name: 'Rahul Sharma',
-                          phone: '9876543210',
-                          requirement: 'Modular Kitchen',
-                          budget: '3L - 5L',
-                          message: 'Need urgent delivery',
-                        }}
-                      />
-                      <TemplateEditor
-                        templateName="Contractor Inquiry Template"
-                        templateValue={settingsForm.contractorInquiryTemplate}
-                        onChange={(v) => setSettingsForm({ ...settingsForm, contractorInquiryTemplate: v })}
-                        availablePlaceholders={[
-                          { key: 'companyName', description: 'Company name' },
-                          { key: 'contactName', description: 'Contact person name' },
-                          { key: 'phone', description: 'Phone number' },
-                          { key: 'projectType', description: 'Project type' },
-                          { key: 'quantity', description: 'Order quantity' },
-                          { key: 'message', description: 'Additional message' },
-                        ]}
-                        sampleData={{
-                          companyName: 'ABC Builders',
-                          contactName: 'Suresh Kumar',
-                          phone: '9876543210',
-                          projectType: 'Residential',
-                          quantity: '50 sheets',
-                          message: 'Need urgent delivery',
-                        }}
-                      />
-                      <TemplateEditor
-                        templateName="Site Visit Template"
-                        templateValue={settingsForm.siteVisitTemplate}
-                        onChange={(v) => setSettingsForm({ ...settingsForm, siteVisitTemplate: v })}
-                        availablePlaceholders={[
-                          { key: 'companyName', description: 'Company name' },
-                          { key: 'name', description: 'Customer name' },
-                          { key: 'phone', description: 'Phone number' },
-                          { key: 'date', description: 'Preferred date' },
-                          { key: 'workType', description: 'Type of work' },
-                          { key: 'address', description: 'Site address' },
-                        ]}
-                        sampleData={{
-                          companyName: 'MAHAVEER PLYWOOD',
-                          name: 'Rahul Sharma',
-                          phone: '9876543210',
-                          date: '15 March 2026',
-                          workType: 'Full Interior',
-                          address: '123 MG Road, Bangalore',
-                        }}
-                      />
-                      <TemplateEditor
-                        templateName="Product Inquiry Template"
-                        templateValue={settingsForm.productInquiryTemplate}
-                        onChange={(v) => setSettingsForm({ ...settingsForm, productInquiryTemplate: v })}
-                        availablePlaceholders={[
-                          { key: 'companyName', description: 'Company name' },
-                          { key: 'product', description: 'Product name' },
-                          { key: 'category', description: 'Product category' },
-                          { key: 'specifications', description: 'Product specifications' },
-                        ]}
-                        sampleData={{
-                          companyName: 'MAHAVEER PLYWOOD',
-                          product: 'Premium Plywood 18mm',
-                          category: 'plywood',
-                          specifications: '8x4 ft, 18mm thickness',
-                        }}
-                      />
-                      <TemplateEditor
-                        templateName="Quote Builder Template"
-                        templateValue={settingsForm.quoteBuilderTemplate}
-                        onChange={(v) => setSettingsForm({ ...settingsForm, quoteBuilderTemplate: v })}
-                        availablePlaceholders={[
-                          { key: 'companyName', description: 'Company name' },
-                          { key: 'modules', description: 'Selected modules' },
-                          { key: 'name', description: 'Customer name' },
-                          { key: 'phone', description: 'Phone number' },
-                          { key: 'city', description: 'City' },
-                        ]}
-                        sampleData={{
-                          companyName: 'MAHAVEER PLYWOOD',
-                          modules: 'Kitchen, Wardrobe, TV Unit',
-                          name: 'Rahul Sharma',
-                          phone: '9876543210',
-                          city: 'Bangalore',
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Save Button */}
-                  <button
-                    onClick={handleSaveSettings}
-                    disabled={isUpdating}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 min-h-[48px]"
-                  >
-                    {isUpdating ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4" />
-                        Save Settings
-                      </>
-                    )}
-                  </button>
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white border border-gold-200 rounded-2xl p-6 shadow-luxury space-y-4">
+              <h3 className="font-serif font-bold text-foreground mb-2">Business Settings</h3>
+              {(
+                [
+                  { key: 'companyName', label: 'Company Name' },
+                  { key: 'primaryPhone', label: 'Primary Phone' },
+                  { key: 'secondaryPhone', label: 'Secondary Phone' },
+                  { key: 'email', label: 'Email' },
+                  { key: 'whatsappNumber', label: 'WhatsApp Number' },
+                  { key: 'businessHours', label: 'Business Hours' },
+                  { key: 'address', label: 'Address' },
+                ] as { key: keyof BusinessSettings; label: string }[]
+              ).map(({ key, label }) => (
+                <div key={key}>
+                  <label className={labelClass}>{label}</label>
+                  <input
+                    type="text"
+                    value={(settingsForm[key] as string) || ''}
+                    onChange={(e) =>
+                      setSettingsForm((prev) => ({ ...prev, [key]: e.target.value }))
+                    }
+                    placeholder={label}
+                    className={inputClass}
+                  />
                 </div>
-              )}
+              ))}
+              <button
+                onClick={handleSaveSettings}
+                disabled={isSaving}
+                className="flex items-center gap-2 px-4 py-2 btn-gold text-sm font-semibold rounded-xl transition-all disabled:opacity-50"
+              >
+                {isSaving ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                Save Settings
+              </button>
             </div>
-          </>
+          </div>
+        )}
+
+        {/* Templates Tab */}
+        {activeTab === 'templates' && settings && (
+          <div className="max-w-2xl mx-auto space-y-6">
+            <TemplateEditor
+              templateName="Estimate Message"
+              templateValue={
+                settingsForm.estimateMessageTemplate || settings.estimateMessageTemplate || ''
+              }
+              availablePlaceholders={['name', 'phone', 'projectType', 'budget', 'area']}
+              sampleData={{
+                name: 'Rahul',
+                phone: '9876543210',
+                projectType: 'Complete Home',
+                budget: '₹8L–₹15L',
+                area: '1200',
+              }}
+              onChange={(val) =>
+                setSettingsForm((prev) => ({ ...prev, estimateMessageTemplate: val }))
+              }
+            />
+            <TemplateEditor
+              templateName="Contractor Inquiry"
+              templateValue={
+                settingsForm.contractorInquiryTemplate ||
+                settings.contractorInquiryTemplate ||
+                ''
+              }
+              availablePlaceholders={['name', 'phone', 'company', 'projectType', 'message']}
+              sampleData={{
+                name: 'Suresh',
+                phone: '9876543210',
+                company: 'ABC Builders',
+                projectType: 'Residential',
+                message: 'Need bulk pricing',
+              }}
+              onChange={(val) =>
+                setSettingsForm((prev) => ({ ...prev, contractorInquiryTemplate: val }))
+              }
+            />
+            <TemplateEditor
+              templateName="Site Visit"
+              templateValue={
+                settingsForm.siteVisitTemplate || settings.siteVisitTemplate || ''
+              }
+              availablePlaceholders={['name', 'phone', 'address', 'date', 'time', 'notes']}
+              sampleData={{
+                name: 'Priya',
+                phone: '9876543210',
+                address: '123 MG Road, Pune',
+                date: '2026-03-15',
+                time: '10:00 AM – 12:00 PM',
+                notes: 'New 3BHK',
+              }}
+              onChange={(val) =>
+                setSettingsForm((prev) => ({ ...prev, siteVisitTemplate: val }))
+              }
+            />
+            <TemplateEditor
+              templateName="Product Inquiry"
+              templateValue={
+                settingsForm.productInquiryTemplate || settings.productInquiryTemplate || ''
+              }
+              availablePlaceholders={['products']}
+              sampleData={{ products: '• BWR Plywood 18mm\n• Hettich Hinges' }}
+              onChange={(val) =>
+                setSettingsForm((prev) => ({ ...prev, productInquiryTemplate: val }))
+              }
+            />
+            <TemplateEditor
+              templateName="Quote Builder"
+              templateValue={
+                settingsForm.quoteBuilderTemplate || settings.quoteBuilderTemplate || ''
+              }
+              availablePlaceholders={['rooms', 'tier', 'estimate']}
+              sampleData={{
+                rooms: 'Living Room, Kitchen, Master Bedroom',
+                tier: 'Premium',
+                estimate: '₹4,50,000 – ₹5,85,000',
+              }}
+              onChange={(val) =>
+                setSettingsForm((prev) => ({ ...prev, quoteBuilderTemplate: val }))
+              }
+            />
+            <button
+              onClick={handleSaveSettings}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-4 py-2 btn-gold text-sm font-semibold rounded-xl transition-all disabled:opacity-50"
+            >
+              {isSaving ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              Save Templates
+            </button>
+          </div>
         )}
       </div>
     </div>

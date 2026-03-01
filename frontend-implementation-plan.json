@@ -1,222 +1,278 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Mobile-friendly responsive layout",
+  "title": "Full Mahaveer Plywood & Interiors Website Rebuild - Frontend",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Make Navigation component fully responsive with hamburger menu on mobile",
+      "summary": "Implement white/gold luxury theme across the entire frontend with clean, premium aesthetics and mobile-responsive design",
       "acceptanceCriteria": [
-        "Navigation renders a hamburger icon on screens smaller than md breakpoint",
-        "Tapping the hamburger opens a full-width dropdown with all nav links",
-        "Active section highlighting works in mobile menu",
-        "WhatsApp CTA button is accessible in mobile menu"
+        "All pages use white backgrounds with gold accent colors",
+        "Typography uses Playfair Display for headings and Inter for body text",
+        "Layout is fully responsive across mobile, tablet, and desktop"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Navigation.tsx",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Add responsive hamburger menu that collapses desktop nav links on screens < md breakpoint. Implement mobile menu state (open/close), render hamburger icon button, create full-width mobile dropdown with all nav links and CTA buttons, ensure active section highlighting works in mobile view, and make touch targets minimum 44x44px."
+          "description": "Update global CSS custom properties to enforce white backgrounds with gold accents throughout the theme. Ensure all color tokens (--background, --foreground, --card, --accent, etc.) align with the luxury white/gold palette. Verify gold color scale definitions and luxury utility classes (luxury-card, text-gradient-gold, grain-overlay)."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Review and adjust Tailwind theme extension to support white/gold luxury design. Ensure custom fonts (Playfair Display for headings, Inter for body) are properly configured. Verify gold color scale, luxury shadows, and animation definitions support the premium aesthetic across all breakpoints."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Make HeroSection responsive with proper text scaling and form layout on mobile",
+      "summary": "Build the Hero section with full-screen background image, company headline, subheadline, CTA buttons, and four trust-indicator cards",
       "acceptanceCriteria": [
-        "Hero headline font size scales down on mobile (text-3xl or smaller)",
-        "Service badges wrap or stack cleanly on small screens",
-        "Action buttons are full-width or appropriately sized on mobile",
-        "QuickEstimateForm fields are full-width and usable on mobile"
+        "Hero section renders full-screen with background image",
+        "CTA buttons scroll smoothly to quote and gallery sections",
+        "Four trust-indicator cards are visible on all screen sizes"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/HeroSection.tsx",
           "operation": "modify",
-          "description": "Add responsive classes: scale headline typography to text-3xl or smaller on mobile, make service badge grid wrap or stack vertically on small screens, ensure action buttons are full-width or appropriately sized on mobile, and verify QuickEstimateForm renders properly on small screens."
-        },
-        {
-          "path": "frontend/src/components/QuickEstimateForm.tsx",
-          "operation": "modify",
-          "description": "Make all form inputs full-width on screens < md, ensure proper vertical spacing between labels and inputs, and make submit button full-width with minimum 44px height on mobile."
+          "description": "Update HeroSection to use the generated hero background image at frontend/public/assets/generated/hero-bg.dim_1920x1080.png. Ensure full-screen layout, company headline/subheadline pulling from business settings, CTA buttons with smooth scroll to #quote-builder and #gallery sections, and four trust-indicator cards (27+ years, 5000+ projects, satisfaction rating, category count) in a responsive grid. Verify mobile responsiveness."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Make ServicesSection and ServiceCard components responsive with adaptive grid layout",
+      "summary": "Build the Services section showcasing six services with cards containing image, title, description, feature list, and CTA button",
       "acceptanceCriteria": [
-        "Service cards stack in 1 column on mobile, 2 on tablet, and 3+ on desktop",
-        "Card text does not overflow or get clipped",
-        "Quote-request buttons are full-width on mobile"
+        "All six service cards are rendered in a responsive grid",
+        "'Get Free Quote' button on each card scrolls to the quote section"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/ServicesSection.tsx",
           "operation": "modify",
-          "description": "Update service card grid to use responsive classes: 1 column on mobile, 2 columns on tablet (md), and 3+ columns on desktop (lg). Ensure quote blocks also respond appropriately."
+          "description": "Update ServicesSection to render six service cards (Plywood, Hardware, Laminates, Electrical, Paints, Interiors) in a responsive grid. Use generated service images: frontend/public/assets/generated/service-plywood.dim_256x256.png, frontend/public/assets/generated/service-hardware.dim_256x256.png, frontend/public/assets/generated/service-laminates.dim_256x256.png, frontend/public/assets/generated/service-interior.dim_256x256.png (for Electrical and Paints, use placeholder or existing assets). Each card should include title, description, feature list, and 'Get Free Quote' button scrolling to #quote-builder."
         },
         {
           "path": "frontend/src/components/ServiceCard.tsx",
           "operation": "modify",
-          "description": "Make quote button full-width on mobile screens, ensure text content does not overflow by using proper text wrapping classes, and verify badge and icon scale appropriately."
+          "description": "Ensure ServiceCard component displays service image, title, description, feature list, and a CTA button that smooth-scrolls to the #quote-builder section. Apply luxury card styling with white background and gold accents."
         }
       ]
     },
     {
       "id": "REQ-4",
-      "summary": "Make ProductCatalogSection and ProductCard components responsive without horizontal scrolling",
+      "summary": "Build the Product Catalog section with category filter, search input, product grid, and InquiryBasket panel",
       "acceptanceCriteria": [
-        "Category filter buttons wrap or scroll horizontally without breaking layout",
-        "Search input is full-width on mobile",
-        "Product grid is 1 column on mobile and 2 columns on tablet",
-        "InquiryBasket panel is readable and scrollable on small screens"
+        "Category filter and search input filter products in real time",
+        "Products can be added to and removed from the enquiry basket",
+        "InquiryBasket panel appears when at least one item is selected",
+        "WhatsApp enquiry opens a pre-filled chat link"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/ProductCatalogSection.tsx",
           "operation": "modify",
-          "description": "Make search input full-width on mobile, implement responsive category filter bar that wraps or scrolls horizontally without breaking layout, update product grid to 1 column on mobile and 2 columns on tablet (md), and ensure InquiryBasket is readable on small screens."
+          "description": "Ensure ProductCatalogSection displays category filter tabs, a search input, and a responsive grid of ProductCard components. Integrate real-time filtering using category and search state. Show the InquiryBasket component when items are selected. Use useProductCatalog hook to fetch products from the backend and filter them locally."
         },
         {
           "path": "frontend/src/components/ProductCard.tsx",
           "operation": "modify",
-          "description": "Ensure card content stacks properly on mobile without overflow, make action buttons full-width or appropriately sized on small screens, and verify image and text scale correctly."
+          "description": "Update ProductCard to display product image, category badge, description, and action buttons for WhatsApp inquiry and adding/removing from the inquiry basket. Use useInquiryBasket and useWhatsAppTemplates hooks. Apply luxury card styling."
         },
         {
           "path": "frontend/src/components/InquiryBasket.tsx",
           "operation": "modify",
-          "description": "Ensure basket panel is readable and scrollable on small screens, make action buttons full-width on mobile, and verify product list renders without horizontal overflow."
+          "description": "Ensure InquiryBasket displays selected product names with options to remove individual items, clear all, and send a bulk WhatsApp inquiry using the product inquiry template from useWhatsAppTemplates. Style as a fixed or slide-out panel with white/gold theme."
+        },
+        {
+          "path": "frontend/src/hooks/useProductCatalog.ts",
+          "operation": "modify",
+          "description": "Review useProductCatalog hook to ensure it fetches products from the backend actor using getAllProducts, filterProductsByCategory, and searchProducts methods. Maintain fallback to localStorage defaults. Ensure proper React Query setup and error handling."
+        },
+        {
+          "path": "frontend/src/hooks/useInquiryBasket.ts",
+          "operation": "modify",
+          "description": "Verify useInquiryBasket hook manages a list of selected product names with add, remove, and clear operations. Ensure state is correctly exposed for use in ProductCard and InquiryBasket components."
         }
       ]
     },
     {
       "id": "REQ-5",
-      "summary": "Make GallerySection and ImageLightbox responsive with touch-friendly controls",
+      "summary": "Build the Premium Quote Builder section with room selection, quality tier picker, cost estimate, and WhatsApp submission",
       "acceptanceCriteria": [
-        "Gallery displays 1 column on mobile and 2 columns on tablet",
-        "Lightbox fills the full viewport on mobile",
-        "Prev/next buttons are large enough for touch (min 44x44px)"
+        "Room selection and quality tier inputs update the cost estimate dynamically",
+        "Packages below ₹8,00,000 for entire home show 'Not Applicable'",
+        "WhatsApp button sends the full quote summary"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/GallerySection.tsx",
+          "path": "frontend/src/components/PremiumQuoteBuilder.tsx",
           "operation": "modify",
-          "description": "Update gallery grid to display 1 column on mobile and 2 columns on tablet (md), ensure action buttons are full-width or appropriately sized on mobile, and verify thumbnails scale correctly without overflow."
-        },
-        {
-          "path": "frontend/src/components/ImageLightbox.tsx",
-          "operation": "modify",
-          "description": "Make lightbox fill full viewport on mobile, ensure prev/next buttons are minimum 44x44px for touch targets, verify close button is easily accessible, and ensure image scales properly within viewport on all screen sizes."
+          "description": "Update PremiumQuoteBuilder to allow users to select rooms (multi-select checkboxes or dropdown) and choose a quality tier (Essential/Premium/Luxury). Calculate and display estimated cost range dynamically. Show 'Not Applicable' for entire home furniture packages below ₹8,00,000. Include a WhatsApp CTA that sends the quote summary using the quoteBuilderTemplate from useWhatsAppTemplates. Apply luxury styling with white/gold theme."
         }
       ]
     },
     {
       "id": "REQ-6",
-      "summary": "Make PricingSection and PricingCard components responsive with single-column layout on mobile",
+      "summary": "Build the Pricing section with three tiers (Essential, Premium, Luxury) displayed as pricing cards with a highlighted most popular tier",
       "acceptanceCriteria": [
-        "Pricing cards stack vertically on mobile",
-        "Feature lists and CTA buttons are fully visible without overflow"
+        "Three pricing tier cards are displayed in a responsive grid",
+        "The most popular tier is visually distinguished",
+        "CTA button on each card scrolls to the quote section"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/PricingSection.tsx",
           "operation": "modify",
-          "description": "Update pricing grid to stack cards vertically (1 column) on mobile and expand to multi-column on tablet and desktop."
+          "description": "Ensure PricingSection renders three PricingCard components for Essential, Premium, and Luxury tiers in a responsive grid. Mark one tier (e.g., Premium) as most popular with visual distinction. Use hardcoded tier data as currently implemented."
         },
         {
           "path": "frontend/src/components/PricingCard.tsx",
           "operation": "modify",
-          "description": "Ensure feature lists and CTA buttons are fully visible without overflow on mobile, make CTA button full-width on small screens with minimum 44px height, and verify card content scales appropriately."
+          "description": "Verify PricingCard displays tier name, features list, price range, and a CTA button that smooth-scrolls to #quote-builder. Apply highlighted styling for the most popular tier (e.g., gold border or background). Maintain luxury white/gold theme."
         }
       ]
     },
     {
       "id": "REQ-7",
-      "summary": "Make all form components responsive with full-width inputs and proper spacing on mobile",
+      "summary": "Build the Gallery section with a 3-column image grid and full-screen lightbox with keyboard navigation",
       "acceptanceCriteria": [
-        "All form inputs are full-width on screens < md",
-        "Labels and inputs have sufficient vertical spacing",
-        "Submit/CTA buttons are minimum 44px tall",
-        "No horizontal overflow on any form section"
+        "Gallery renders images in a 3-column responsive grid",
+        "Lightbox opens on image click with full-screen view",
+        "Arrow keys navigate between images; Escape closes the lightbox"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/ContractorInquiryForm.tsx",
+          "path": "frontend/src/components/GallerySection.tsx",
           "operation": "modify",
-          "description": "Make all form inputs full-width on mobile (< md), ensure proper vertical spacing between labels and inputs, make submit button minimum 44px tall and full-width on mobile, and verify no horizontal overflow."
+          "description": "Update GallerySection to display a 3-column responsive image grid using the generated gallery images: frontend/public/assets/generated/gallery-kitchen-1.dim_800x600.png, frontend/public/assets/generated/gallery-wardrobe-1.dim_800x600.png, frontend/public/assets/generated/gallery-interior-1.dim_800x600.png, frontend/public/assets/generated/project-kitchen.dim_800x600.png, frontend/public/assets/generated/project-wardrobe.dim_800x600.png, frontend/public/assets/generated/project-tv-unit.dim_800x600.png, frontend/public/assets/generated/project-electrical.dim_800x600.png, frontend/public/assets/generated/project-paint-finish.dim_800x600.png, frontend/public/assets/generated/project-full-interior.dim_800x600.png. Clicking an image opens the ImageLightbox component."
         },
         {
-          "path": "frontend/src/components/PremiumQuoteBuilder.tsx",
+          "path": "frontend/src/components/ImageLightbox.tsx",
           "operation": "modify",
-          "description": "Make all form inputs and checkboxes full-width on mobile, ensure module selection grid wraps or stacks properly on small screens, make submit button minimum 44px tall and full-width on mobile, and ensure proper spacing between form sections."
-        },
-        {
-          "path": "frontend/src/components/SiteVisitBookingForm.tsx",
-          "operation": "modify",
-          "description": "Make all form inputs full-width on mobile (< md), ensure date picker and select inputs are touch-friendly, make submit button minimum 44px tall and full-width on mobile, and verify proper vertical spacing between fields."
-        },
-        {
-          "path": "frontend/src/components/ContactSection.tsx",
-          "operation": "modify",
-          "description": "Ensure contact information and site visit form are responsive, stack contact details vertically on mobile, make form inputs full-width on small screens, and verify skeleton loading states work on mobile."
-        },
-        {
-          "path": "frontend/src/components/ContractorZoneSection.tsx",
-          "operation": "modify",
-          "description": "Make service badges wrap or stack on mobile, ensure action buttons are full-width or appropriately sized on small screens, and verify ContractorInquiryForm renders properly within the section on mobile."
+          "description": "Ensure ImageLightbox supports full-screen viewing, previous/next navigation buttons, keyboard controls (arrow keys for navigation, Escape to close), and displays image caption with title and description. Apply luxury modal styling with white background and gold accents."
         }
       ]
     },
     {
       "id": "REQ-8",
-      "summary": "Make Footer responsive with stacked columns on mobile",
+      "summary": "Build the Contractor Zone section with partnership benefits and contractor inquiry form that sends details via WhatsApp",
       "acceptanceCriteria": [
-        "Footer columns stack to 1 column on mobile",
-        "Social media icons and links are easily tappable (min 44px target)",
-        "No text overflow or clipping on small screens"
+        "Four benefit cards are displayed alongside the inquiry form",
+        "Form validates required fields before submission",
+        "WhatsApp link opens with formatted contractor inquiry details"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Footer.tsx",
+          "path": "frontend/src/components/ContractorZoneSection.tsx",
           "operation": "modify",
-          "description": "Update footer layout to stack columns vertically (1 column) on mobile and expand to multi-column grid on tablet and desktop. Ensure social media icons have minimum 44x44px touch targets, verify no text overflow or clipping on small screens, and maintain proper spacing between stacked sections."
+          "description": "Ensure ContractorZoneSection displays four partnership benefits (bulk pricing, fast delivery, quality, support) in a grid or list, alongside the ContractorInquiryForm in a two-column layout. Apply luxury styling consistent with the white/gold theme."
+        },
+        {
+          "path": "frontend/src/components/ContractorInquiryForm.tsx",
+          "operation": "modify",
+          "description": "Verify ContractorInquiryForm collects name, phone, company, project type, and message with proper validation. On submit, format the inquiry using the contractorInquiryTemplate from useWhatsAppTemplates and open a WhatsApp chat link. Apply luxury form styling."
         }
       ]
     },
     {
       "id": "REQ-9",
-      "summary": "Make AdminPanel responsive with accessible tabbed interface and forms on mobile",
+      "summary": "Build the Contact section with business info cards, Site Visit Booking Form, and Quick Estimate Form, both sending details via WhatsApp",
       "acceptanceCriteria": [
-        "Admin tabs are scrollable or wrap on small screens",
-        "Product list switches to card layout on mobile if the table overflows",
-        "All form fields in business settings are full-width on mobile"
+        "Business info cards display phone, email, address, and hours",
+        "Site visit booking form sends details via WhatsApp on submit",
+        "Quick estimate form blocks low-budget full-home submissions with a clear message"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/AdminPanel.tsx",
+          "path": "frontend/src/components/ContactSection.tsx",
           "operation": "modify",
-          "description": "Make tab navigation scrollable or wrap on small screens, convert product management table to card layout on mobile if needed to prevent overflow, make all business settings form inputs full-width on mobile (< md), ensure template editor is usable on small screens, and verify PIN input dialog is mobile-friendly."
+          "description": "Ensure ContactSection displays dynamic business info cards (phone, email, address, hours) sourced from useBusinessSettings hook, alongside embedded SiteVisitBookingForm and QuickEstimateForm components. Apply luxury grid layout with white/gold theme."
         },
         {
-          "path": "frontend/src/components/TemplateEditor.tsx",
+          "path": "frontend/src/components/SiteVisitBookingForm.tsx",
           "operation": "modify",
-          "description": "Ensure template editor textarea is full-width on mobile, make placeholder badges wrap properly on small screens, verify live preview panel is readable on mobile, and ensure proper spacing between editor sections."
+          "description": "Verify SiteVisitBookingForm collects name, phone, address, preferred date/time, and notes with validation. On submit, format the details using the siteVisitTemplate from useWhatsAppTemplates and open a WhatsApp chat link. Apply luxury form styling."
+        },
+        {
+          "path": "frontend/src/components/QuickEstimateForm.tsx",
+          "operation": "modify",
+          "description": "Ensure QuickEstimateForm collects name, phone, project type, budget, and area with validation. Block submissions for full-home projects below the minimum budget (₹8,00,000) with a clear error message. On valid submit, format the estimate request using the estimateMessageTemplate from useWhatsAppTemplates and open a WhatsApp chat link. Apply luxury form styling."
         }
       ]
     },
     {
       "id": "REQ-10",
-      "summary": "Ensure FloatingWhatsAppButton does not overlap important content on mobile",
+      "summary": "Add a fixed floating WhatsApp button in the bottom-right corner with an animated ping indicator",
       "acceptanceCriteria": [
-        "Floating button is positioned so it does not obscure primary CTAs or form submit buttons on small screens",
-        "Button is easily tappable on mobile (min 48x48px)"
+        "Floating button is always visible in the bottom-right corner",
+        "Clicking opens WhatsApp chat to 919588046569 in a new tab",
+        "Animated ping indicator is visible"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/FloatingWhatsAppButton.tsx",
           "operation": "modify",
-          "description": "Adjust floating button position on mobile to avoid obscuring primary CTAs or form submit buttons (consider using bottom-left or adjusting bottom offset on small screens), ensure button size is minimum 48x48px for easy tapping, and verify button remains accessible without blocking critical UI elements."
+          "description": "Ensure FloatingWhatsAppButton is fixed in the bottom-right corner with an animated ping indicator. Use useWhatsAppContact hook to open a WhatsApp chat to 919588046569 with a default greeting message. Apply luxury styling with white button background and gold accents. Verify z-index ensures button stays above other content."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Build the fixed top Navigation bar with smooth-scroll links, company name, phone CTA, and responsive mobile hamburger menu",
+      "acceptanceCriteria": [
+        "All nav links scroll smoothly to their respective sections",
+        "Mobile hamburger menu opens and closes correctly",
+        "Company name and phone number are displayed in the navbar"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Navigation.tsx",
+          "operation": "modify",
+          "description": "Ensure Navigation component is fixed at the top with smooth-scroll links to all page sections (#hero, #services, #products, #pricing, #gallery, #contractor-zone, #quote-builder, #contact). Display company name and phone number CTA pulled from useBusinessSettings hook. Implement responsive mobile hamburger menu that opens/closes correctly. Apply luxury white/gold theme with proper z-index."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Build the site Footer displaying company logo, quick navigation links, and contact details with a copyright bar",
+      "acceptanceCriteria": [
+        "Footer displays logo, nav links, and contact details",
+        "Copyright bar is shown at the bottom of the footer"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Ensure Footer displays the company logo (use frontend/public/assets/generated/logo.dim_400x120.png or frontend/public/assets/generated/logo-icon.dim_88x88.png), quick navigation links to all sections, and contact details (phone, email, address) pulled from useBusinessSettings hook. Include a copyright bar at the bottom with current year. Apply luxury white/gold theme."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Build the PIN-protected Admin Panel with tabs for managing products, business settings, and WhatsApp message templates",
+      "acceptanceCriteria": [
+        "Admin panel is accessible only after entering PIN 2580",
+        "Products can be added, edited, and deleted via the admin panel",
+        "Business settings changes are persisted to the backend",
+        "WhatsApp message templates can be edited with placeholder tokens and previewed live"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AdminPanel.tsx",
+          "operation": "modify",
+          "description": "Ensure AdminPanel is PIN-protected (PIN: 2580) using local state or URL parameter check. Implement tabs for Products Management (add/edit/delete), Business Settings (company name, phone, email, address, hours), and WhatsApp Message Templates (estimate, contractor inquiry, site visit, product inquiry, quote builder) with live preview using TemplateEditor component. Use React Query mutations to persist changes via backend actor methods (addProduct, editProduct, deleteProduct, updateBusinessSettings). Apply luxury white/gold theme. Verify the authorization component is not required here since PIN-based access is sufficient."
+        },
+        {
+          "path": "frontend/src/components/TemplateEditor.tsx",
+          "operation": "modify",
+          "description": "Verify TemplateEditor supports toggling between edit and live preview modes, inserting placeholder tokens via clickable badges, and rendering the preview with sample data. Apply luxury styling with white background and gold accents."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the AdminPanel component into the App layout. Add a route or conditional render for the admin panel (e.g., triggered by a URL hash #admin or query parameter ?admin=2580). Ensure the AdminPanel is only shown when the correct PIN is provided. Do not add a navigation link to the admin panel in the public navigation menu."
         }
       ]
     }

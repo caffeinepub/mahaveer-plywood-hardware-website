@@ -1,139 +1,143 @@
-import { useState } from 'react';
-import { Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { Send, Loader2 } from 'lucide-react';
 import { useWhatsAppTemplates } from '../hooks/useWhatsAppTemplates';
 import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
+
+interface FormData {
+  name: string;
+  phone: string;
+  company: string;
+  projectType: string;
+  message: string;
+}
 
 export default function ContractorInquiryForm() {
-  const [companyName, setCompanyName] = useState('');
-  const [contactName, setContactName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [projectType, setProjectType] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [message, setMessage] = useState('');
+  const [form, setForm] = useState<FormData>({
+    name: '',
+    phone: '',
+    company: '',
+    projectType: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { templates, replacePlaceholders } = useWhatsAppTemplates();
   const { openWhatsApp } = useWhatsAppContact();
-  const { data: settings } = useBusinessSettings();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const bizName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-
-    const whatsappMessage = templates?.contractorInquiryTemplate
-      ? replacePlaceholders(templates.contractorInquiryTemplate, {
-          companyName,
-          contactName,
-          phone,
-          projectType,
-          quantity: quantity || '-',
-          message: message || '-',
-        })
-      : `Hello ${bizName},\n\nContractor Enquiry:\nCompany: ${companyName}\nContact: ${contactName}\nPhone: ${phone}\nProject Type: ${projectType}\nQuantity: ${quantity || '-'}\nMessage: ${message || '-'}\n\nPlease share bulk pricing & availability.`;
-
-    openWhatsApp(whatsappMessage);
+  const validate = (): boolean => {
+    const newErrors: Partial<FormData> = {};
+    if (!form.name.trim()) newErrors.name = 'Name is required';
+    if (!form.phone.trim()) newErrors.phone = 'Phone is required';
+    if (!form.company.trim()) newErrors.company = 'Company name is required';
+    if (!form.projectType.trim()) newErrors.projectType = 'Project type is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setIsSubmitting(true);
+    try {
+      const message = replacePlaceholders(templates.contractorInquiry, {
+        name: form.name,
+        phone: form.phone,
+        company: form.company,
+        projectType: form.projectType,
+        message: form.message,
+      });
+      openWhatsApp(message);
+      setForm({ name: '', phone: '', company: '', projectType: '', message: '' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const inputClass = (field: keyof FormData) =>
+    `w-full px-4 py-3 rounded-xl border ${
+      errors[field] ? 'border-destructive' : 'border-gold-200'
+    } bg-white focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent text-sm transition-all`;
+
   return (
-    <div className="bg-card border border-border rounded-2xl p-5 sm:p-6">
-      <h3 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-5">Contractor Inquiry</h3>
-
-      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-              Company Name
-            </label>
-            <input
-              type="text"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Your company"
-              className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-              Contact Name
-            </label>
-            <input
-              type="text"
-              value={contactName}
-              onChange={(e) => setContactName(e.target.value)}
-              placeholder="Your name"
-              className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]"
-              required
-            />
-          </div>
-        </div>
-
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Your phone number"
-            className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-            Project Type
-          </label>
-          <select
-            value={projectType}
-            onChange={(e) => setProjectType(e.target.value)}
-            className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]"
-            required
-          >
-            <option value="">Select project type...</option>
-            <option value="Residential">Residential</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Hospitality">Hospitality</option>
-            <option value="Industrial">Industrial</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-            Estimated Quantity / Order Size
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Full Name *</label>
           <input
             type="text"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            placeholder="e.g. 100 sheets, 5 kitchens"
-            className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]"
+            value={form.name}
+            onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+            placeholder="Your name"
+            className={inputClass('name')}
           />
+          {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
         </div>
-
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-foreground/80 mb-1.5">
-            Additional Message
-          </label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Any specific requirements..."
-            rows={3}
-            className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
+          <label className="block text-sm font-medium text-foreground mb-1.5">Phone Number *</label>
+          <input
+            type="tel"
+            value={form.phone}
+            onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+            placeholder="+91 XXXXX XXXXX"
+            className={inputClass('phone')}
           />
+          {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone}</p>}
         </div>
+      </div>
 
-        <button
-          type="submit"
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm sm:text-base min-h-[44px]"
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">Company Name *</label>
+        <input
+          type="text"
+          value={form.company}
+          onChange={e => setForm(p => ({ ...p, company: e.target.value }))}
+          placeholder="Your company or firm name"
+          className={inputClass('company')}
+        />
+        {errors.company && <p className="text-destructive text-xs mt-1">{errors.company}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">Project Type *</label>
+        <select
+          value={form.projectType}
+          onChange={e => setForm(p => ({ ...p, projectType: e.target.value }))}
+          className={inputClass('projectType')}
         >
-          <Send className="w-4 h-4" />
-          Send Contractor Inquiry
-        </button>
-      </form>
-    </div>
+          <option value="">Select project type</option>
+          <option value="Residential">Residential</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Hospitality">Hospitality</option>
+          <option value="Industrial">Industrial</option>
+          <option value="Mixed Use">Mixed Use</option>
+        </select>
+        {errors.projectType && <p className="text-destructive text-xs mt-1">{errors.projectType}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">Message (Optional)</label>
+        <textarea
+          value={form.message}
+          onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+          placeholder="Tell us about your project requirements..."
+          rows={3}
+          className="w-full px-4 py-3 rounded-xl border border-gold-200 bg-white focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent text-sm resize-none transition-all"
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl btn-gold font-bold text-sm disabled:opacity-60"
+      >
+        {isSubmitting ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Send className="h-4 w-4" />
+        )}
+        {isSubmitting ? 'Opening WhatsApp...' : 'Send via WhatsApp'}
+      </button>
+    </form>
   );
 }

@@ -1,28 +1,23 @@
 import { useBusinessSettings } from './useBusinessSettings';
 
 export function useWhatsAppTemplates() {
-  const { data: settings, isLoading } = useBusinessSettings();
+  const { data: settings } = useBusinessSettings();
 
-  const replacePlaceholders = (template: string, data: Record<string, string>): string => {
+  const templates = {
+    estimate: settings?.estimateMessageTemplate ?? '',
+    contractorInquiry: settings?.contractorInquiryTemplate ?? '',
+    siteVisit: settings?.siteVisitTemplate ?? '',
+    productInquiry: settings?.productInquiryTemplate ?? '',
+    quoteBuilder: settings?.quoteBuilderTemplate ?? '',
+  };
+
+  const replacePlaceholders = (template: string, values: Record<string, string>): string => {
     let result = template;
-    Object.entries(data).forEach(([key, value]) => {
-      const placeholder = `{${key}}`;
-      result = result.replace(new RegExp(placeholder, 'g'), value || '');
+    Object.entries(values).forEach(([key, value]) => {
+      result = result.replace(new RegExp(`{{${key}}}`, 'g'), value || 'N/A');
     });
     return result;
   };
 
-  return {
-    templates: settings
-      ? {
-          estimateMessageTemplate: settings.estimateMessageTemplate,
-          contractorInquiryTemplate: settings.contractorInquiryTemplate,
-          siteVisitTemplate: settings.siteVisitTemplate,
-          productInquiryTemplate: settings.productInquiryTemplate,
-          quoteBuilderTemplate: settings.quoteBuilderTemplate,
-        }
-      : null,
-    replacePlaceholders,
-    isLoading,
-  };
+  return { templates, replacePlaceholders };
 }

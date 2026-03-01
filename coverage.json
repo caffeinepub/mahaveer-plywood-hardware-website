@@ -1,29 +1,31 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T06:05:51.285Z",
+  "generatedAt": "2026-03-01T07:44:10.775Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 10,
-    "implemented": 10,
+    "total": 14,
+    "implemented": 13,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Make the Navigation component fully responsive: the desktop nav links and CTA buttons should collapse into a hamburger/mobile menu on small screens, ensuring touch targets are large enough and the menu opens/closes smoothly.",
+        "summary": "Implement a white/gold luxury theme across the entire frontend with clean, premium aesthetics, gold accents, and mobile-responsive design consistent with the existing CSS token setup.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/Navigation.tsx"
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js"
         ],
         "matchedFiles": [
-          "frontend/src/components/Navigation.tsx"
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js"
         ]
       },
       {
         "id": "REQ-10",
-        "summary": "Ensure the FloatingWhatsAppButton does not overlap important content on mobile; reposition or resize it as needed so it does not block bottom navigation or form submit buttons.",
+        "summary": "Add a fixed floating WhatsApp button in the bottom-right corner with an animated ping indicator that opens a pre-filled WhatsApp chat to number 919588046569.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/FloatingWhatsAppButton.tsx"
@@ -33,21 +35,63 @@
         ]
       },
       {
-        "id": "REQ-2",
-        "summary": "Make the HeroSection responsive: headline text, service badges, action buttons, and the embedded QuickEstimateForm must stack vertically and scale correctly on mobile screens without overflow or truncation.",
+        "id": "REQ-11",
+        "summary": "Build the fixed top Navigation bar with smooth-scroll links to all page sections, company name and phone number CTA pulled from business settings, and a responsive mobile hamburger menu.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/HeroSection.tsx",
-          "frontend/src/components/QuickEstimateForm.tsx"
+          "frontend/src/components/Navigation.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/HeroSection.tsx",
-          "frontend/src/components/QuickEstimateForm.tsx"
+          "frontend/src/components/Navigation.tsx"
+        ]
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Build the site Footer displaying the company logo, quick navigation links, and contact details (phone, email, address) with a copyright bar at the bottom.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Footer.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Footer.tsx"
+        ]
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Build the PIN-protected Admin Panel (PIN: 2580) with tabs for managing products (add/edit/delete), business settings (company name, phone, email, address, hours), and WhatsApp message templates with a live preview editor.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/AdminPanel.tsx",
+          "frontend/src/components/TemplateEditor.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/AdminPanel.tsx",
+          "frontend/src/components/TemplateEditor.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-14",
+        "summary": "Implement the backend Motoko actor with data models and endpoints for: product catalog (CRUD), business settings (contact info, WhatsApp templates), and role-based access control for admin operations.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Build the Hero section with a full-screen background image, company headline, subheadline, CTA buttons linking to the quote and gallery sections, and four trust-indicator cards showing 27+ years experience, 5000+ projects, satisfaction rating, and category count.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/HeroSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/HeroSection.tsx"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Make the ServicesSection and ServiceCard components responsive: the service card grid should switch from multi-column to a single-column or two-column layout on small screens, with readable text and accessible buttons.",
+        "summary": "Build the Services section showcasing six services: Plywood, Hardware, Laminates, Electrical, Paints, and Interiors — each with a service card containing image, title, description, feature list, and a 'Get Free Quote' button that scrolls to the quote section.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/ServicesSection.tsx",
@@ -60,35 +104,37 @@
       },
       {
         "id": "REQ-4",
-        "summary": "Make the ProductCatalogSection and ProductCard components responsive: the product grid, search input, category filter bar, and InquiryBasket must all be usable on small screens without horizontal scrolling.",
+        "summary": "Build the Product Catalog section with category filter tabs, a search input, and a grid of product cards. Each product card shows image, category badge, description, and action buttons to inquire via WhatsApp or add to the enquiry basket. Display an InquiryBasket panel when items are selected.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/ProductCatalogSection.tsx",
           "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/InquiryBasket.tsx"
+          "frontend/src/components/InquiryBasket.tsx",
+          "frontend/src/hooks/useProductCatalog.ts",
+          "frontend/src/hooks/useInquiryBasket.ts"
         ],
         "matchedFiles": [
           "frontend/src/components/ProductCatalogSection.tsx",
           "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/InquiryBasket.tsx"
+          "frontend/src/components/InquiryBasket.tsx",
+          "frontend/src/hooks/useProductCatalog.ts",
+          "frontend/src/hooks/useInquiryBasket.ts"
         ]
       },
       {
         "id": "REQ-5",
-        "summary": "Make the GallerySection and ImageLightbox responsive: gallery thumbnails should reflow to fewer columns on mobile, and the lightbox should be full-screen with accessible prev/next controls on touch devices.",
+        "summary": "Build the Premium Quote Builder section where users select rooms and a quality tier (Essential / Premium / Luxury) to receive an estimated interior project cost range, then send the quote details via WhatsApp. Show 'Not Applicable' for entire home furniture packages below ₹8,00,000.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/GallerySection.tsx",
-          "frontend/src/components/ImageLightbox.tsx"
+          "frontend/src/components/PremiumQuoteBuilder.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/GallerySection.tsx",
-          "frontend/src/components/ImageLightbox.tsx"
+          "frontend/src/components/PremiumQuoteBuilder.tsx"
         ]
       },
       {
         "id": "REQ-6",
-        "summary": "Make the PricingSection and PricingCard components responsive: the three-column pricing grid must stack to a single column on mobile with full-width cards.",
+        "summary": "Build the Pricing section with three tiers — Essential, Premium, and Luxury — each rendered as a pricing card with features list, price range, and a CTA button. The most popular tier should be visually highlighted.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/PricingSection.tsx",
@@ -101,56 +147,73 @@
       },
       {
         "id": "REQ-7",
-        "summary": "Make the ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, and ContactSection responsive: all forms must have full-width inputs on mobile, proper label spacing, and submit buttons that are easy to tap.",
+        "summary": "Build the Gallery section with a 3-column image grid where clicking an image opens a full-screen lightbox with previous/next navigation, keyboard support (arrow keys and Escape), and an image caption.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/ContractorInquiryForm.tsx",
-          "frontend/src/components/PremiumQuoteBuilder.tsx",
-          "frontend/src/components/SiteVisitBookingForm.tsx",
-          "frontend/src/components/ContactSection.tsx",
-          "frontend/src/components/ContractorZoneSection.tsx"
+          "frontend/src/components/GallerySection.tsx",
+          "frontend/src/components/ImageLightbox.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/ContractorInquiryForm.tsx",
-          "frontend/src/components/PremiumQuoteBuilder.tsx",
-          "frontend/src/components/SiteVisitBookingForm.tsx",
-          "frontend/src/components/ContactSection.tsx",
-          "frontend/src/components/ContractorZoneSection.tsx"
+          "frontend/src/components/GallerySection.tsx",
+          "frontend/src/components/ImageLightbox.tsx"
         ]
       },
       {
         "id": "REQ-8",
-        "summary": "Make the Footer responsive: footer columns (company info, contact details, quick links, social icons) should stack vertically on mobile and render as a multi-column grid on tablet and desktop.",
+        "summary": "Build the Contractor Zone section targeting contractors, displaying four partnership benefits (bulk pricing, fast delivery, quality, support) alongside a contractor inquiry form that collects name, phone, company, project type, and message, then opens a WhatsApp chat with the formatted details.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/Footer.tsx"
+          "frontend/src/components/ContractorZoneSection.tsx",
+          "frontend/src/components/ContractorInquiryForm.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/Footer.tsx"
+          "frontend/src/components/ContractorZoneSection.tsx",
+          "frontend/src/components/ContractorInquiryForm.tsx"
         ]
       },
       {
         "id": "REQ-9",
-        "summary": "Make the AdminPanel responsive: the tabbed interface, product management table/list, and business settings form must be usable on mobile screens, with inputs and buttons accessible without horizontal scrolling.",
+        "summary": "Build the Contact section displaying business info cards (phone, email, address, hours) alongside a Site Visit Booking Form (name, phone, address, preferred date/time, notes) and a Quick Estimate Form (name, phone, project type, budget, area). Both forms send details via WhatsApp. Block Quick Estimate submissions for full-home projects below the minimum budget.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/AdminPanel.tsx",
-          "frontend/src/components/TemplateEditor.tsx"
+          "frontend/src/components/ContactSection.tsx",
+          "frontend/src/components/SiteVisitBookingForm.tsx",
+          "frontend/src/components/QuickEstimateForm.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/AdminPanel.tsx"
+          "frontend/src/components/ContactSection.tsx",
+          "frontend/src/components/SiteVisitBookingForm.tsx",
+          "frontend/src/components/QuickEstimateForm.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/blob-storage/Mixin.mo",
+    "backend/blob-storage/Storage.mo",
+    "backend/main.mo",
     "build-request.json",
-    "build-template/README.md",
     "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/public/assets/generated/gallery-bathroom.dim_800x600.png",
+    "frontend/public/assets/generated/gallery-bedroom.dim_800x600.png",
+    "frontend/public/assets/generated/gallery-kitchen.dim_800x600.png",
+    "frontend/public/assets/generated/gallery-living.dim_800x600.png",
+    "frontend/public/assets/generated/gallery-office.dim_800x600.png",
+    "frontend/public/assets/generated/gallery-wardrobe.dim_800x600.png",
+    "frontend/public/assets/generated/hero-bg.dim_1920x1080.png",
+    "frontend/public/assets/generated/logo-icon.dim_200x200.png",
+    "frontend/public/assets/generated/service-electrical.dim_600x400.png",
+    "frontend/public/assets/generated/service-hardware.dim_600x400.png",
+    "frontend/public/assets/generated/service-interiors.dim_600x400.png",
+    "frontend/public/assets/generated/service-laminates.dim_600x400.png",
+    "frontend/public/assets/generated/service-paints.dim_600x400.png",
+    "frontend/public/assets/generated/service-plywood.dim_600x400.png",
     "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/AdminPanel.tsx",
     "frontend/src/components/ContactSection.tsx",
     "frontend/src/components/ContractorInquiryForm.tsx",
@@ -171,6 +234,18 @@
     "frontend/src/components/ServiceCard.tsx",
     "frontend/src/components/ServicesSection.tsx",
     "frontend/src/components/SiteVisitBookingForm.tsx",
+    "frontend/src/components/TemplateEditor.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useActiveSection.ts",
+    "frontend/src/hooks/useBusinessSettings.ts",
+    "frontend/src/hooks/useInquiryBasket.ts",
+    "frontend/src/hooks/useProductCatalog.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useWhatsAppContact.ts",
+    "frontend/src/hooks/useWhatsAppTemplates.ts",
+    "frontend/src/index.css",
+    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

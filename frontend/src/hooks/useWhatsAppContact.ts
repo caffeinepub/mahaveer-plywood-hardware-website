@@ -1,18 +1,14 @@
 import { useBusinessSettings } from './useBusinessSettings';
 
 export function useWhatsAppContact() {
-  const { data: settings, isLoading } = useBusinessSettings();
+  const { data: settings } = useBusinessSettings();
 
-  const openWhatsApp = (message: string) => {
-    const whatsappNumber = settings?.whatsappNumber || '';
+  const openWhatsApp = (message: string = '') => {
+    const number = settings?.whatsappNumber ?? '919588046569';
     const encodedMessage = encodeURIComponent(message);
-    const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    const url = `https://wa.me/${number}${encodedMessage ? `?text=${encodedMessage}` : ''}`;
     window.open(url, '_blank');
   };
 
-  return {
-    whatsappNumber: settings?.whatsappNumber || '',
-    openWhatsApp,
-    isLoading,
-  };
+  return { openWhatsApp, whatsappNumber: settings?.whatsappNumber ?? '919588046569' };
 }

@@ -1,69 +1,59 @@
-import { LucideIcon, ArrowRight } from 'lucide-react';
-import { useWhatsAppTemplates } from '../hooks/useWhatsAppTemplates';
-import { useWhatsAppContact } from '../hooks/useWhatsAppContact';
-import { useBusinessSettings } from '../hooks/useBusinessSettings';
-
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  features: string[];
-  image: string;
-}
+import React from 'react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 
 interface ServiceCardProps {
-  service: Service;
+  title: string;
+  description: string;
+  image: string;
+  features: string[];
+  color: string;
 }
 
-export default function ServiceCard({ service }: ServiceCardProps) {
-  const { templates, replacePlaceholders } = useWhatsAppTemplates();
-  const { openWhatsApp } = useWhatsAppContact();
-  const { data: settings } = useBusinessSettings();
-  const Icon = service.icon;
-
-  const handleQuoteRequest = () => {
-    const companyName = settings?.companyName || 'MAHAVEER PLYWOOD & INTERIORS';
-    const message = templates?.productInquiryTemplate
-      ? replacePlaceholders(templates.productInquiryTemplate, {
-          companyName,
-          product: service.title,
-          category: service.id,
-          specifications: service.description,
-        })
-      : `Hello ${companyName},\n\nI want a quote for: ${service.title}\n\nProperty Details:\nBudget Range:\n\nPlease share pricing and options.`;
-    openWhatsApp(message);
+export default function ServiceCard({ title, description, image, features, color }: ServiceCardProps) {
+  const scrollToQuote = () => {
+    const el = document.getElementById('quote-builder');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 hover:border-primary/40 transition-all duration-300 group flex flex-col">
-      {/* Icon */}
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
-        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+    <div className="luxury-card overflow-hidden group transition-all duration-300 hover:-translate-y-1">
+      {/* Image */}
+      <div className={`relative h-48 bg-gradient-to-br ${color} overflow-hidden`}>
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          onError={e => {
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
-      {/* Title & Description */}
-      <h3 className="text-base sm:text-lg font-bold text-foreground mb-1.5 sm:mb-2">{service.title}</h3>
-      <p className="text-xs sm:text-sm text-foreground/60 mb-3 sm:mb-4 flex-1">{service.description}</p>
+      {/* Content */}
+      <div className="p-6">
+        <h3 className="font-serif text-xl font-bold text-foreground mb-2">{title}</h3>
+        <p className="text-muted-foreground text-sm leading-relaxed mb-4">{description}</p>
 
-      {/* Features */}
-      <ul className="space-y-1 sm:space-y-1.5 mb-4 sm:mb-5">
-        {service.features.map((feature) => (
-          <li key={feature} className="flex items-center gap-2 text-xs sm:text-sm text-foreground/70">
-            <div className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
+        {/* Features */}
+        <ul className="space-y-1.5 mb-5">
+          {features.map(feature => (
+            <li key={feature} className="flex items-center gap-2 text-sm text-foreground/80">
+              <CheckCircle className="h-4 w-4 text-gold-500 flex-shrink-0" />
+              {feature}
+            </li>
+          ))}
+        </ul>
 
-      {/* Quote Button */}
-      <button
-        onClick={handleQuoteRequest}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-primary/30 text-primary rounded-lg text-sm font-medium hover:bg-primary/10 transition-colors min-h-[44px]"
-      >
-        Get Quote
-        <ArrowRight className="w-4 h-4" />
-      </button>
+        {/* CTA */}
+        <button
+          onClick={scrollToQuote}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-gold text-sm font-bold"
+        >
+          Get Free Quote
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   );
 }

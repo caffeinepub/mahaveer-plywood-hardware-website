@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-make-the-navigation-component-fully-responsive-the-desktop-nav-links-and-cta-buttons-should-collapse-into-a-hamburger-mobile-menu-on-small-screens-ensuring-touch-targets-are-large-enough-and-the-menu-opens-closes-smoothly",
-      "featureTitle": "Make the Navigation component fully responsive: the desktop nav links and CTA buttons should collapse into a hamburger/mobile menu on small screens, ensuring touch targets are large enough and the menu opens/closes smoothly.",
+      "featureId": "feature-implement-a-white-gold-luxury-theme-across-the-entire-frontend-with-clean-premium-aesthetics-gold-accents-and-mobile-responsive-design-consistent-with-the-existing-css-token-setup",
+      "featureTitle": "Implement a white/gold luxury theme across the entire frontend with clean, premium aesthetics, gold accents, and mobile-responsive design consistent with the existing CSS token setup.",
       "files": [
-        "frontend/src/components/Navigation.tsx"
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -13,7 +14,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-1"
@@ -21,11 +23,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-herosection-responsive-headline-text-service-badges-action-buttons-and-the-embedded-quickestimateform-must-stack-vertically-and-scale-correctly-on-mobile-screens-without-overflow-or-truncation",
-      "featureTitle": "Make the HeroSection responsive: headline text, service badges, action buttons, and the embedded QuickEstimateForm must stack vertically and scale correctly on mobile screens without overflow or truncation.",
+      "featureId": "feature-build-the-hero-section-with-a-full-screen-background-image-company-headline-subheadline-cta-buttons-linking-to-the-quote-and-gallery-sections-and-four-trust-indicator-cards-showing-27-years-experience-5000-projects-satisfaction-rating-and-category-count",
+      "featureTitle": "Build the Hero section with a full-screen background image, company headline, subheadline, CTA buttons linking to the quote and gallery sections, and four trust-indicator cards showing 27+ years experience, 5000+ projects, satisfaction rating, and category count.",
       "files": [
-        "frontend/src/components/HeroSection.tsx",
-        "frontend/src/components/QuickEstimateForm.tsx"
+        "frontend/src/components/HeroSection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -33,7 +34,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-2"
@@ -41,8 +43,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-servicessection-and-servicecard-components-responsive-the-service-card-grid-should-switch-from-multi-column-to-a-single-column-or-two-column-layout-on-small-screens-with-readable-text-and-accessible-buttons",
-      "featureTitle": "Make the ServicesSection and ServiceCard components responsive: the service card grid should switch from multi-column to a single-column or two-column layout on small screens, with readable text and accessible buttons.",
+      "featureId": "feature-build-the-services-section-showcasing-six-services-plywood-hardware-laminates-electrical-paints-and-interiors-each-with-a-service-card-containing-image-title-description-feature-list-and-a-get-free-quote-button-that-scrolls-to-the-quote-section",
+      "featureTitle": "Build the Services section showcasing six services: Plywood, Hardware, Laminates, Electrical, Paints, and Interiors — each with a service card containing image, title, description, feature list, and a 'Get Free Quote' button that scrolls to the quote section.",
       "files": [
         "frontend/src/components/ServiceCard.tsx",
         "frontend/src/components/ServicesSection.tsx"
@@ -53,7 +55,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-3"
@@ -61,12 +64,14 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-productcatalogsection-and-productcard-components-responsive-the-product-grid-search-input-category-filter-bar-and-inquirybasket-must-all-be-usable-on-small-screens-without-horizontal-scrolling",
-      "featureTitle": "Make the ProductCatalogSection and ProductCard components responsive: the product grid, search input, category filter bar, and InquiryBasket must all be usable on small screens without horizontal scrolling.",
+      "featureId": "feature-build-the-product-catalog-section-with-category-filter-tabs-a-search-input-and-a-grid-of-product-cards-each-product-card-shows-image-category-badge-description-and-action-buttons-to-inquire-via-whatsapp-or-add-to-the-enquiry-basket-display-an-inquirybasket-panel-when-items-are-selected",
+      "featureTitle": "Build the Product Catalog section with category filter tabs, a search input, and a grid of product cards. Each product card shows image, category badge, description, and action buttons to inquire via WhatsApp or add to the enquiry basket. Display an InquiryBasket panel when items are selected.",
       "files": [
         "frontend/src/components/InquiryBasket.tsx",
         "frontend/src/components/ProductCard.tsx",
-        "frontend/src/components/ProductCatalogSection.tsx"
+        "frontend/src/components/ProductCatalogSection.tsx",
+        "frontend/src/hooks/useInquiryBasket.ts",
+        "frontend/src/hooks/useProductCatalog.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -74,7 +79,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-4"
@@ -82,11 +88,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-gallerysection-and-imagelightbox-responsive-gallery-thumbnails-should-reflow-to-fewer-columns-on-mobile-and-the-lightbox-should-be-full-screen-with-accessible-prev-next-controls-on-touch-devices",
-      "featureTitle": "Make the GallerySection and ImageLightbox responsive: gallery thumbnails should reflow to fewer columns on mobile, and the lightbox should be full-screen with accessible prev/next controls on touch devices.",
+      "featureId": "feature-build-the-premium-quote-builder-section-where-users-select-rooms-and-a-quality-tier-essential-premium-luxury-to-receive-an-estimated-interior-project-cost-range-then-send-the-quote-details-via-whatsapp-show-not-applicable-for-entire-home-furniture-packages-below-8-00-000",
+      "featureTitle": "Build the Premium Quote Builder section where users select rooms and a quality tier (Essential / Premium / Luxury) to receive an estimated interior project cost range, then send the quote details via WhatsApp. Show 'Not Applicable' for entire home furniture packages below ₹8,00,000.",
       "files": [
-        "frontend/src/components/GallerySection.tsx",
-        "frontend/src/components/ImageLightbox.tsx"
+        "frontend/src/components/PremiumQuoteBuilder.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -94,7 +99,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-5"
@@ -102,8 +108,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-pricingsection-and-pricingcard-components-responsive-the-three-column-pricing-grid-must-stack-to-a-single-column-on-mobile-with-full-width-cards",
-      "featureTitle": "Make the PricingSection and PricingCard components responsive: the three-column pricing grid must stack to a single column on mobile with full-width cards.",
+      "featureId": "feature-build-the-pricing-section-with-three-tiers-essential-premium-and-luxury-each-rendered-as-a-pricing-card-with-features-list-price-range-and-a-cta-button-the-most-popular-tier-should-be-visually-highlighted",
+      "featureTitle": "Build the Pricing section with three tiers — Essential, Premium, and Luxury — each rendered as a pricing card with features list, price range, and a CTA button. The most popular tier should be visually highlighted.",
       "files": [
         "frontend/src/components/PricingCard.tsx",
         "frontend/src/components/PricingSection.tsx"
@@ -114,7 +120,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-6"
@@ -122,13 +129,53 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-the-contractorzonesection-contractorinquiryform-premiumquotebuilder-sitevisitbookingform-and-contactsection-responsive-all-forms-must-have-full-width-inputs-on-mobile-proper-label-spacing-and-submit-buttons-that-are-easy-to-tap",
-      "featureTitle": "Make the ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, and ContactSection responsive: all forms must have full-width inputs on mobile, proper label spacing, and submit buttons that are easy to tap.",
+      "featureId": "feature-build-the-gallery-section-with-a-3-column-image-grid-where-clicking-an-image-opens-a-full-screen-lightbox-with-previous-next-navigation-keyboard-support-arrow-keys-and-escape-and-an-image-caption",
+      "featureTitle": "Build the Gallery section with a 3-column image grid where clicking an image opens a full-screen lightbox with previous/next navigation, keyboard support (arrow keys and Escape), and an image caption.",
+      "files": [
+        "frontend/src/components/GallerySection.tsx",
+        "frontend/src/components/ImageLightbox.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-contractor-zone-section-targeting-contractors-displaying-four-partnership-benefits-bulk-pricing-fast-delivery-quality-support-alongside-a-contractor-inquiry-form-that-collects-name-phone-company-project-type-and-message-then-opens-a-whatsapp-chat-with-the-formatted-details",
+      "featureTitle": "Build the Contractor Zone section targeting contractors, displaying four partnership benefits (bulk pricing, fast delivery, quality, support) alongside a contractor inquiry form that collects name, phone, company, project type, and message, then opens a WhatsApp chat with the formatted details.",
+      "files": [
+        "frontend/src/components/ContractorInquiryForm.tsx",
+        "frontend/src/components/ContractorZoneSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-contact-section-displaying-business-info-cards-phone-email-address-hours-alongside-a-site-visit-booking-form-name-phone-address-preferred-date-time-notes-and-a-quick-estimate-form-name-phone-project-type-budget-area-both-forms-send-details-via-whatsapp-block-quick-estimate-submissions-for-full-home-projects-below-the-minimum-budget",
+      "featureTitle": "Build the Contact section displaying business info cards (phone, email, address, hours) alongside a Site Visit Booking Form (name, phone, address, preferred date/time, notes) and a Quick Estimate Form (name, phone, project type, budget, area). Both forms send details via WhatsApp. Block Quick Estimate submissions for full-home projects below the minimum budget.",
       "files": [
         "frontend/src/components/ContactSection.tsx",
-        "frontend/src/components/ContractorInquiryForm.tsx",
-        "frontend/src/components/ContractorZoneSection.tsx",
-        "frontend/src/components/PremiumQuoteBuilder.tsx",
+        "frontend/src/components/QuickEstimateForm.tsx",
         "frontend/src/components/SiteVisitBookingForm.tsx"
       ],
       "components": [
@@ -137,45 +184,8 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-make-the-footer-responsive-footer-columns-company-info-contact-details-quick-links-social-icons-should-stack-vertically-on-mobile-and-render-as-a-multi-column-grid-on-tablet-and-desktop",
-      "featureTitle": "Make the Footer responsive: footer columns (company info, contact details, quick links, social icons) should stack vertically on mobile and render as a multi-column grid on tablet and desktop.",
-      "files": [
-        "frontend/src/components/Footer.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-8"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-make-the-adminpanel-responsive-the-tabbed-interface-product-management-table-list-and-business-settings-form-must-be-usable-on-mobile-screens-with-inputs-and-buttons-accessible-without-horizontal-scrolling",
-      "featureTitle": "Make the AdminPanel responsive: the tabbed interface, product management table/list, and business settings form must be usable on mobile screens, with inputs and buttons accessible without horizontal scrolling.",
-      "files": [
-        "frontend/src/components/AdminPanel.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-9"
@@ -183,8 +193,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-ensure-the-floatingwhatsappbutton-does-not-overlap-important-content-on-mobile-reposition-or-resize-it-as-needed-so-it-does-not-block-bottom-navigation-or-form-submit-buttons",
-      "featureTitle": "Ensure the FloatingWhatsAppButton does not overlap important content on mobile; reposition or resize it as needed so it does not block bottom navigation or form submit buttons.",
+      "featureId": "feature-add-a-fixed-floating-whatsapp-button-in-the-bottom-right-corner-with-an-animated-ping-indicator-that-opens-a-pre-filled-whatsapp-chat-to-number-919588046569",
+      "featureTitle": "Add a fixed floating WhatsApp button in the bottom-right corner with an animated ping indicator that opens a pre-filled WhatsApp chat to number 919588046569.",
       "files": [
         "frontend/src/components/FloatingWhatsAppButton.tsx"
       ],
@@ -194,10 +204,73 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-fixed-top-navigation-bar-with-smooth-scroll-links-to-all-page-sections-company-name-and-phone-number-cta-pulled-from-business-settings-and-a-responsive-mobile-hamburger-menu",
+      "featureTitle": "Build the fixed top Navigation bar with smooth-scroll links to all page sections, company name and phone number CTA pulled from business settings, and a responsive mobile hamburger menu.",
+      "files": [
+        "frontend/src/components/Navigation.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-site-footer-displaying-the-company-logo-quick-navigation-links-and-contact-details-phone-email-address-with-a-copyright-bar-at-the-bottom",
+      "featureTitle": "Build the site Footer displaying the company logo, quick navigation links, and contact details (phone, email, address) with a copyright bar at the bottom.",
+      "files": [
+        "frontend/src/components/Footer.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-pin-protected-admin-panel-pin-2580-with-tabs-for-managing-products-add-edit-delete-business-settings-company-name-phone-email-address-hours-and-whatsapp-message-templates-with-a-live-preview-editor",
+      "featureTitle": "Build the PIN-protected Admin Panel (PIN: 2580) with tabs for managing products (add/edit/delete), business settings (company name, phone, email, address, hours), and WhatsApp message templates with a live preview editor.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AdminPanel.tsx",
+        "frontend/src/components/TemplateEditor.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
       ],
       "confidence": "high"
     }
