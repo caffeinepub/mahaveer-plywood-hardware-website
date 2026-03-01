@@ -1,0 +1,176 @@
+{
+  "kind": "build_request",
+  "title": "Mobile-friendly responsive layout",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Make the Navigation component fully responsive: the desktop nav links and CTA buttons should collapse into a hamburger/mobile menu on small screens, ensuring touch targets are large enough and the menu opens/closes smoothly.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "It has to mobile friendly"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigation renders a hamburger icon on screens smaller than md breakpoint",
+        "Tapping the hamburger opens a full-width dropdown with all nav links",
+        "Active section highlighting works in mobile menu",
+        "WhatsApp CTA button is accessible in mobile menu"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Make the HeroSection responsive: headline text, service badges, action buttons, and the embedded QuickEstimateForm must stack vertically and scale correctly on mobile screens without overflow or truncation.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hero headline font size scales down on mobile (text-3xl or smaller)",
+        "Service badges wrap or stack cleanly on small screens",
+        "Action buttons are full-width or appropriately sized on mobile",
+        "QuickEstimateForm fields are full-width and usable on mobile"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Make the ServicesSection and ServiceCard components responsive: the service card grid should switch from multi-column to a single-column or two-column layout on small screens, with readable text and accessible buttons.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Service cards stack in 1 column on mobile, 2 on tablet, and 3+ on desktop",
+        "Card text does not overflow or get clipped",
+        "Quote-request buttons are full-width on mobile"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Make the ProductCatalogSection and ProductCard components responsive: the product grid, search input, category filter bar, and InquiryBasket must all be usable on small screens without horizontal scrolling.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Category filter buttons wrap or scroll horizontally without breaking layout",
+        "Search input is full-width on mobile",
+        "Product grid is 1 column on mobile and 2 columns on tablet",
+        "InquiryBasket panel is readable and scrollable on small screens"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Make the GallerySection and ImageLightbox responsive: gallery thumbnails should reflow to fewer columns on mobile, and the lightbox should be full-screen with accessible prev/next controls on touch devices.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Gallery displays 1 column on mobile and 2 columns on tablet",
+        "Lightbox fills the full viewport on mobile",
+        "Prev/next buttons are large enough for touch (min 44x44px)"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Make the PricingSection and PricingCard components responsive: the three-column pricing grid must stack to a single column on mobile with full-width cards.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Pricing cards stack vertically on mobile",
+        "Feature lists and CTA buttons are fully visible without overflow"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Make the ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, and ContactSection responsive: all forms must have full-width inputs on mobile, proper label spacing, and submit buttons that are easy to tap.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All form inputs are full-width on screens < md",
+        "Labels and inputs have sufficient vertical spacing",
+        "Submit/CTA buttons are minimum 44px tall",
+        "No horizontal overflow on any form section"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Make the Footer responsive: footer columns (company info, contact details, quick links, social icons) should stack vertically on mobile and render as a multi-column grid on tablet and desktop.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer columns stack to 1 column on mobile",
+        "Social media icons and links are easily tappable (min 44px target)",
+        "No text overflow or clipping on small screens"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Make the AdminPanel responsive: the tabbed interface, product management table/list, and business settings form must be usable on mobile screens, with inputs and buttons accessible without horizontal scrolling.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin tabs are scrollable or wrap on small screens",
+        "Product list switches to card layout on mobile if the table overflows",
+        "All form fields in business settings are full-width on mobile"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Ensure the FloatingWhatsAppButton does not overlap important content on mobile; reposition or resize it as needed so it does not block bottom navigation or form submit buttons.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Floating button is positioned so it does not obscure primary CTAs or form submit buttons on small screens",
+        "Button is easily tappable on mobile (min 48x48px)"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not alter backend logic or data models",
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Preserve the existing luxury black-and-gold visual theme and all existing features"
+  ],
+  "nonGoals": [
+    "Adding new features or sections",
+    "Changing the visual theme, color palette, or typography",
+    "Modifying backend Motoko code"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

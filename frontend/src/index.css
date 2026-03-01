@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* Ultra-luxury black + gold theme */
+        --bg0: 0.02 0 0;
+        --bg1: 0.03 0 0;
+        --bg2: 0.05 0 0;
+        
+        --glass: 1 0 0 / 3.5%;
+        --glass2: 1 0 0 / 5.5%;
+        --line: 1 0 0 / 10%;
+        
+        --text: 0.97 0 0;
+        --muted: 0.73 0 0;
+        --muted2: 0.73 0 0 / 72%;
+        
+        --gold: 0.68 0.12 65;
+        --gold2: 0.60 0.10 60;
+        --emerald: 0.65 0.20 145;
+        
+        --shadow: 0 22px 70px rgba(0,0,0,.60);
+        --shadow2: 0 12px 30px rgba(0,0,0,.38);
+        
+        --r14: 14px;
+        --r16: 16px;
+        --r22: 22px;
+        --r26: 26px;
+        
+        --radius: 1rem;
+        
+        /* Mapped to shadcn variables */
+        --background: var(--bg1);
+        --foreground: var(--text);
+        
+        --card: var(--bg2);
+        --card-foreground: var(--text);
+        
+        --popover: var(--bg2);
+        --popover-foreground: var(--text);
+        
+        --primary: var(--gold);
+        --primary-foreground: var(--bg1);
+        
+        --secondary: var(--bg2);
+        --secondary-foreground: var(--text);
+        
+        --muted: var(--bg2);
+        --muted-foreground: var(--muted);
+        
+        --accent: var(--glass2);
+        --accent-foreground: var(--text);
+        
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: var(--text);
+        
+        --border: var(--line);
+        --input: var(--line);
+        --ring: var(--gold);
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        
+        /* Multi-layer luxury background */
+        background:
+            radial-gradient(1200px 650px at 12% 10%, oklch(var(--gold) / 20%), transparent 55%),
+            radial-gradient(900px 520px at 90% 15%, oklch(var(--gold) / 12%), transparent 55%),
+            radial-gradient(900px 520px at 55% 120%, oklch(var(--gold) / 8%), transparent 55%),
+            linear-gradient(180deg, oklch(var(--bg2)) 0%, oklch(var(--bg1)) 60%, oklch(var(--bg0)) 100%);
+    }
+    
+    /* Luxury grain texture overlay */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+    
+    /* Section glow effect */
+    .sectionGlow {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sectionGlow::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background:
+            radial-gradient(900px 320px at 16% 0%, oklch(var(--gold) / 12%), transparent 62%),
+            radial-gradient(850px 360px at 92% 10%, oklch(var(--gold) / 8%), transparent 66%);
+        pointer-events: none;
+        opacity: 0.75;
+        z-index: 0;
+    }
+    
+    .sectionGlow > * {
+        position: relative;
+        z-index: 1;
+    }
+}
+

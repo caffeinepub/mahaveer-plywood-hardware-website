@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-make-the-navigation-component-fully-responsive-the-desktop-nav-links-and-cta-buttons-should-collapse-into-a-hamburger-mobile-menu-on-small-screens-ensuring-touch-targets-are-large-enough-and-the-menu-opens-closes-smoothly",
+      "title": "Make the Navigation component fully responsive: the desktop nav links and CTA buttons should collapse into a hamburger/mobile menu on small screens, ensuring touch targets are large enough and the menu opens/closes smoothly.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-herosection-responsive-headline-text-service-badges-action-buttons-and-the-embedded-quickestimateform-must-stack-vertically-and-scale-correctly-on-mobile-screens-without-overflow-or-truncation",
+      "title": "Make the HeroSection responsive: headline text, service badges, action buttons, and the embedded QuickEstimateForm must stack vertically and scale correctly on mobile screens without overflow or truncation.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-servicessection-and-servicecard-components-responsive-the-service-card-grid-should-switch-from-multi-column-to-a-single-column-or-two-column-layout-on-small-screens-with-readable-text-and-accessible-buttons",
+      "title": "Make the ServicesSection and ServiceCard components responsive: the service card grid should switch from multi-column to a single-column or two-column layout on small screens, with readable text and accessible buttons.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-productcatalogsection-and-productcard-components-responsive-the-product-grid-search-input-category-filter-bar-and-inquirybasket-must-all-be-usable-on-small-screens-without-horizontal-scrolling",
+      "title": "Make the ProductCatalogSection and ProductCard components responsive: the product grid, search input, category filter bar, and InquiryBasket must all be usable on small screens without horizontal scrolling.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-gallerysection-and-imagelightbox-responsive-gallery-thumbnails-should-reflow-to-fewer-columns-on-mobile-and-the-lightbox-should-be-full-screen-with-accessible-prev-next-controls-on-touch-devices",
+      "title": "Make the GallerySection and ImageLightbox responsive: gallery thumbnails should reflow to fewer columns on mobile, and the lightbox should be full-screen with accessible prev/next controls on touch devices.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-pricingsection-and-pricingcard-components-responsive-the-three-column-pricing-grid-must-stack-to-a-single-column-on-mobile-with-full-width-cards",
+      "title": "Make the PricingSection and PricingCard components responsive: the three-column pricing grid must stack to a single column on mobile with full-width cards.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-contractorzonesection-contractorinquiryform-premiumquotebuilder-sitevisitbookingform-and-contactsection-responsive-all-forms-must-have-full-width-inputs-on-mobile-proper-label-spacing-and-submit-buttons-that-are-easy-to-tap",
+      "title": "Make the ContractorZoneSection, ContractorInquiryForm, PremiumQuoteBuilder, SiteVisitBookingForm, and ContactSection responsive: all forms must have full-width inputs on mobile, proper label spacing, and submit buttons that are easy to tap.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-footer-responsive-footer-columns-company-info-contact-details-quick-links-social-icons-should-stack-vertically-on-mobile-and-render-as-a-multi-column-grid-on-tablet-and-desktop",
+      "title": "Make the Footer responsive: footer columns (company info, contact details, quick links, social icons) should stack vertically on mobile and render as a multi-column grid on tablet and desktop.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-adminpanel-responsive-the-tabbed-interface-product-management-table-list-and-business-settings-form-must-be-usable-on-mobile-screens-with-inputs-and-buttons-accessible-without-horizontal-scrolling",
+      "title": "Make the AdminPanel responsive: the tabbed interface, product management table/list, and business settings form must be usable on mobile screens, with inputs and buttons accessible without horizontal scrolling.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-floatingwhatsappbutton-does-not-overlap-important-content-on-mobile-reposition-or-resize-it-as-needed-so-it-does-not-block-bottom-navigation-or-form-submit-buttons",
+      "title": "Ensure the FloatingWhatsAppButton does not overlap important content on mobile; reposition or resize it as needed so it does not block bottom navigation or form submit buttons.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Make the app mobile friendly / responsive",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Mobile-friendly responsive layout",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
